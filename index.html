@@ -66,13 +66,6 @@
         }
       } catch (e) {}
 
-      // Fix missing trailing slash on GitHub Pages subdirectory URLs (prevents relative assets 404)
-      (function() {
-        var p = window.location.pathname;
-        if (p.length > 1 && !p.endsWith('/') && !p.split('/').pop().includes('.')) {
-          window.location.replace(window.location.origin + p + '/' + window.location.search + window.location.hash);
-        }
-      })();
     </script>
   </head>
   <body class="bg-slate-50 text-slate-900 dark:bg-[#0B1220] dark:text-slate-100 antialiased selection:bg-teal-500 selection:text-white">
