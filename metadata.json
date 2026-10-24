@@ -1,0 +1,6 @@
+{
+  "name": "ToolNova",
+  "description": "Every Tool You Need. All in One Place. High-performance, client-first web tools platform for images, documents, code, security, and productivity.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

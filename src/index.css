@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --color-background: #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-text: #172033;
+    --color-primary: #16A085;
+    --color-secondary: #6366F1;
+    --color-border: #E2E8F0;
+    --color-muted: #64748B;
+  }
+
+  .dark {
+    --color-background: #0B1220;
+    --color-surface: #131C31;
+    --color-text: #F1F5F9;
+    --color-primary: #2DD4BF;
+    --color-secondary: #818CF8;
+    --color-border: #1E293B;
+    --color-muted: #94A3B8;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    min-height: 100vh;
+  }
+
+  code, pre, kbd {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* Smooth transitions */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

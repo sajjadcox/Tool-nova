@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ToolNova - Redirecting...</title>
+    <script>
+      // Single Page App redirect for GitHub Pages
+      // Converts path to hash route so HashRouter can load the target page seamlessly
+      (function() {
+        var path = window.location.pathname;
+        var segments = path.split('/').filter(Boolean);
+        // If deployed under username.github.io/reponame, first segment is reponame
+        var repoName = segments.length > 0 ? '/' + segments[0] : '';
+        var remainingPath = segments.slice(1).join('/');
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+
+        var targetUrl = repoName + '/#/' + remainingPath + search + hash;
+        window.location.replace(targetUrl);
+      })();
+    </script>
+  </head>
+  <body style="font-family: sans-serif; text-align: center; padding: 40px; background: #0B1220; color: #fff;">
+    <h2>Loading ToolNova...</h2>
+    <p>Redirecting to the requested tool...</p>
+    <p><a href="./" style="color: #14b8a6;">Click here if you are not redirected automatically</a></p>
+  </body>
+</html>
