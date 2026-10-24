@@ -128,7 +128,7 @@ export const VideoToGif: React.FC = () => {
         <FileUpload
           accept="video/*"
           multiple={false}
-          maxSizeMB={100}
+          
           onFilesSelected={handleFilesSelected}
           hint="Select any MP4, WebM, or MOV video clip to extract animated frames and GIFs."
         />

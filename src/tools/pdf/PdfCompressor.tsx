@@ -108,7 +108,7 @@ export const PdfCompressor: React.FC = () => {
         <FileUpload
           accept=".pdf,application/pdf"
           multiple={false}
-          maxSizeMB={50}
+          
           onFilesSelected={handleFilesSelected}
           hint="Select or drag a PDF document to compress. Processed entirely inside your browser."
         />

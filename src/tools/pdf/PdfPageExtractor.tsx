@@ -133,7 +133,7 @@ export const PdfPageExtractor: React.FC = () => {
         <FileUpload
           accept=".pdf,application/pdf"
           multiple={false}
-          maxSizeMB={50}
+          
           onFilesSelected={handleFilesSelected}
           hint="Upload a PDF file to extract specific pages into a brand new document."
         />

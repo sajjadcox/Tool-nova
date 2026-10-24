@@ -11,13 +11,22 @@ import {
   CheckCircle2, 
   ChevronDown,
   X,
-  Search
+  Search,
+  Grid,
+  Youtube,
+  FileText,
+  Image as ImageIcon,
+  Type,
+  Code,
+  Calculator,
+  ShieldAlert,
+  Globe,
+  SlidersHorizontal
 } from 'lucide-react';
 import { TOOLS_REGISTRY } from '../data/tools';
 import { CATEGORIES } from '../data/categories';
 import { SearchBar } from '../components/search/SearchBar';
 import { ToolCard } from '../components/cards/ToolCard';
-import { CategoryCard } from '../components/cards/CategoryCard';
 import { useFavorites } from '../hooks/useFavorites';
 
 export const HomePage: React.FC = () => {
@@ -40,71 +49,75 @@ export const HomePage: React.FC = () => {
     return matchesSearch && matchesCat;
   });
 
-  const isSearchOrFilterActive = searchQuery.trim() !== '' || selectedCategory !== 'all';
-
-  useEffect(() => {
-    if (isSearchOrFilterActive) {
-      const timer = setTimeout(() => {
-        searchResultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [searchQuery, selectedCategory, isSearchOrFilterActive]);
+  const isSearchActive = searchQuery.trim() !== '';
 
   const handleKeywordClick = (kw: string) => {
     setSearchQuery(kw);
     setSelectedCategory('all');
   };
 
-  const handleCategorySelect = (catId: string) => {
+  const handleCategoryPillClick = (catId: string) => {
     setSelectedCategory(catId);
+    if (catId !== 'all') {
+      const el = document.getElementById(`cat-section-${catId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
   };
 
-  const popularTools = TOOLS_REGISTRY.filter(t => t.popular).slice(0, 8);
+  // Featured High-Demand Tools for Quick Access
+  const featuredTools = [
+    TOOLS_REGISTRY.find(t => t.id === 'youtube-all-in-one') || TOOLS_REGISTRY[0],
+    TOOLS_REGISTRY.find(t => t.id === 'pdf-merger') || TOOLS_REGISTRY[1],
+    TOOLS_REGISTRY.find(t => t.id === 'image-compressor') || TOOLS_REGISTRY[2],
+    TOOLS_REGISTRY.find(t => t.id === 'word-counter') || TOOLS_REGISTRY[3],
+    TOOLS_REGISTRY.find(t => t.id === 'qr-code-generator') || TOOLS_REGISTRY[4],
+    TOOLS_REGISTRY.find(t => t.id === 'youtube-money-calculator') || TOOLS_REGISTRY[5],
+    TOOLS_REGISTRY.find(t => t.id === 'json-formatter') || TOOLS_REGISTRY[6],
+    TOOLS_REGISTRY.find(t => t.id === 'password-generator') || TOOLS_REGISTRY[7],
+  ].filter(Boolean);
 
   const popularKeywords = [
-    'YouTube Tools',
-    'Image Compressor',
+    'YouTube Multi-Extractor',
     'PDF Merger',
-    'YouTube Tag Extractor',
-    'Audio Trimmer',
-    'Word Counter',
+    'Image Compressor',
+    'YouTube Tags',
     'YouTube Money Calculator',
+    'Word Counter',
     'JSON Formatter',
-    'Password Generator',
     'QR Code',
-    'Screen Recorder'
+    'Password Generator'
   ];
 
   const faqs = [
     {
-      q: 'Are my files and documents uploaded to any remote servers?',
-      a: 'Never. ToolNova operates with a strict 100% client-side privacy architecture. All image transformations, audio processing, PDF merging, text diffing, and cryptographic operations execute directly inside your browser memory using HTML5, Web Audio, Web Crypto, and Canvas APIs. No file data is ever transmitted or stored remotely.'
+      q: 'Are files or YouTube URLs uploaded or stored on any server?',
+      a: 'Never. ToolNova operates with a 100% private, client-side model. All image processing, PDF operations, audio conversions, and YouTube metadata analysis happen directly in your browser. No files or personal inputs are uploaded to external servers.'
     },
     {
-      q: 'Is ToolNova free to use?',
-      a: 'Yes, ToolNova is 100% free with unlimited usage and zero registration required. There are no paywalls, hidden limits, or credit card requirements.'
+      q: 'Is ToolNova free to use with all tools available?',
+      a: 'Yes, ToolNova (built in ToolkitBD style) is 100% free with unlimited usage, zero file size restrictions, and no registration or account required.'
     },
     {
-      q: 'Can I use ToolNova offline?',
-      a: 'Yes! Once you load the ToolNova web application in your browser, the tools continue to execute entirely client-side even if your internet connection disconnects.'
+      q: 'How does the YouTube All-in-One Multi-Extractor work?',
+      a: 'Simply paste any YouTube video link or Shorts URL. In one screen, it extracts high-resolution 1080p thumbnails, SEO tags, viral hashtags, casing-optimized titles, timestamp chapters, embed code, channel ID, and engagement statistics.'
     },
     {
-      q: 'Does ToolNova require any third-party API keys?',
-      a: 'No. All utilities run natively in your browser using standardized Web APIs and WebAssembly. No external API keys or subscriptions are needed.'
+      q: 'Can I use these tools on mobile and tablet devices?',
+      a: 'Absolutely! The entire platform is fully responsive and optimized for smartphones, tablets, laptops, and desktop screens with instant dark and light mode support.'
     }
   ];
 
   return (
-    <div className="space-y-12 sm:space-y-16 pb-16">
+    <div className="space-y-10 sm:space-y-14 pb-20">
       {/* Hero Section */}
-      <section className="text-center pt-8 sm:pt-14 pb-4 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-5 sm:space-y-6">
+      <section className="text-center pt-8 sm:pt-12 pb-2 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-4 sm:space-y-5">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 dark:bg-teal-950/60 border border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-300 text-[11px] sm:text-xs font-semibold">
           <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
-          <span>100% Client-Side Privacy • Zero Server Uploads • Fast & Free</span>
+          <span>ToolkitBD Style • 150+ Free Web Tools • Unlimited File Size • 100% Private</span>
         </div>
 
-        {/* Hero Headline with Clean, Vibrant Styling */}
         <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.18] max-w-4xl mx-auto">
           Every Tool You Need.{' '}
           <span className="text-teal-600 dark:text-teal-400 block sm:inline">
@@ -112,66 +125,88 @@ export const HomePage: React.FC = () => {
           </span>
         </h1>
 
-        <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-          Discover high-performance, private web tools for images, audio, video, documents, coding, security, and productivity. Runs locally in your browser.
+        <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          Explore YouTube multi-extractors, PDF utilities, image editors, developer tools, text converters, and calculators. Zero upload limits, processed safely in your browser.
         </p>
 
         {/* Central Search Bar */}
-        <div className="max-w-3xl mx-auto pt-2">
+        <div className="max-w-3xl mx-auto pt-1">
           <SearchBar
             value={searchQuery}
             onChange={setSearchQuery}
             selectedCategory={selectedCategory}
-            onSelectCategory={handleCategorySelect}
+            onSelectCategory={setSelectedCategory}
             categories={CATEGORIES}
-            resultCount={isSearchOrFilterActive ? filteredTools.length : undefined}
+            resultCount={isSearchActive || selectedCategory !== 'all' ? filteredTools.length : undefined}
           />
 
           {/* Popular Search Keywords */}
           <div className="flex items-center justify-center gap-1.5 flex-wrap pt-3 text-xs text-slate-500">
-            <span className="font-semibold text-slate-400">Popular:</span>
+            <span className="font-semibold text-slate-400">Quick Searches:</span>
             {popularKeywords.map(kw => (
               <button
                 key={kw}
                 type="button"
                 onClick={() => handleKeywordClick(kw)}
-                className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 hover:bg-teal-50 hover:text-teal-600 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-[11px] sm:text-xs"
+                className="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 hover:bg-teal-50 hover:text-teal-600 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors text-[11px] sm:text-xs font-medium"
               >
                 {kw}
               </button>
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Trust Badges */}
-        <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-[11px] sm:text-xs font-semibold text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-          <div className="flex items-center justify-center gap-2 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-2xs">
-            <ShieldCheck className="w-4 h-4 text-teal-600" />
-            <span>Zero Uploads</span>
-          </div>
-          <div className="flex items-center justify-center gap-2 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-2xs">
-            <Zap className="w-4 h-4 text-amber-500" />
-            <span>Instant Speed</span>
-          </div>
-          <div className="flex items-center justify-center gap-2 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-2xs">
-            <Lock className="w-4 h-4 text-indigo-500" />
-            <span>100% Private</span>
-          </div>
-          <div className="flex items-center justify-center gap-2 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 shadow-2xs">
-            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-            <span>Free Forever</span>
-          </div>
+      {/* Category Navigation Pills (ToolkitBD Style Sticky / Scrollable Filter) */}
+      <section className="sticky top-16 z-30 bg-white/95 dark:bg-[#0B1220]/95 backdrop-blur-md border-y border-slate-200/80 dark:border-slate-800/80 py-2.5 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 overflow-x-auto scrollbar-none">
+          <button
+            type="button"
+            onClick={() => handleCategoryPillClick('all')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+              selectedCategory === 'all'
+                ? 'bg-teal-600 text-white shadow-xs'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+            }`}
+          >
+            <Grid className="w-3.5 h-3.5" />
+            <span>All Tools ({TOOLS_REGISTRY.length})</span>
+          </button>
+
+          {CATEGORIES.map(cat => {
+            const count = TOOLS_REGISTRY.filter(t => t.categorySlug === cat.slug).length;
+            const isSelected = selectedCategory === cat.slug;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => handleCategoryPillClick(cat.slug)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                  isSelected
+                    ? 'bg-teal-600 text-white shadow-xs font-bold'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                <span>{cat.name}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                  isSelected ? 'bg-white/25 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </section>
 
-      {/* Instant Search / Filter Results */}
-      {isSearchOrFilterActive && (
+      {/* When Search or Specific Category Filter is Active: Render Flat Results Grid */}
+      {(isSearchActive || selectedCategory !== 'all') && (
         <section ref={searchResultsRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
           <div className="flex items-center justify-between pb-1 border-b border-slate-200 dark:border-slate-800">
             <div className="flex items-center gap-2">
               <Search className="w-4 h-4 text-teal-600 dark:text-teal-400" />
               <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-                {searchQuery ? `Results for "${searchQuery}"` : `Category: ${CATEGORIES.find(c => c.id === selectedCategory)?.name || selectedCategory}`} ({filteredTools.length})
+                {searchQuery ? `Search Results for "${searchQuery}"` : `${CATEGORIES.find(c => c.slug === selectedCategory)?.name || selectedCategory}`} ({filteredTools.length})
               </h2>
             </div>
             <button
@@ -180,10 +215,10 @@ export const HomePage: React.FC = () => {
                 setSearchQuery('');
                 setSelectedCategory('all');
               }}
-              className="inline-flex items-center gap-1 text-xs text-rose-500 hover:text-rose-600 dark:hover:text-rose-400 font-semibold py-1 px-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 transition-colors"
+              className="inline-flex items-center gap-1 text-xs text-rose-500 hover:text-rose-600 font-semibold py-1 px-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 transition-colors"
             >
               <X className="w-3.5 h-3.5" />
-              <span>Clear Filter</span>
+              <span>Reset Filter</span>
             </button>
           </div>
 
@@ -200,95 +235,117 @@ export const HomePage: React.FC = () => {
             </div>
           ) : (
             <div className="p-8 sm:p-12 text-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500">
-              <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">No tools matched your search criteria.</p>
-              <p className="text-xs mt-1 text-slate-400">Try searching for "PDF", "Image", "Audio", "Password", or "Video".</p>
+              <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">No tools matched your search query.</p>
+              <p className="text-xs mt-1 text-slate-400">Try searching for "YouTube", "PDF", "Image", "Audio", "Password", or "Video".</p>
             </div>
           )}
         </section>
       )}
 
-      {/* Featured / Most Popular Tools */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-5">
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-bold text-[11px] sm:text-xs uppercase tracking-wider">
-              <Flame className="w-3.5 h-3.5 fill-current" />
-              <span>Most Popular</span>
+      {/* When Normal Home View (All Tools): Show Featured Tools + Full Category Tool Sections (ToolkitBD Layout) */}
+      {!isSearchActive && selectedCategory === 'all' && (
+        <div className="space-y-12 sm:space-y-16">
+          {/* Featured / Trending Quick Access */}
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-bold text-xs uppercase tracking-wider">
+                <Flame className="w-4 h-4 fill-current" />
+                <span>Trending & High Demand Tools</span>
+              </div>
+              <Link
+                to="/popular"
+                className="text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1"
+              >
+                <span>View all popular</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Essential Tools
-            </h2>
-          </div>
 
-          <Link
-            to="/popular"
-            className="text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1"
-          >
-            <span>View all</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-          {popularTools.map(tool => (
-            <ToolCard
-              key={tool.id}
-              tool={tool}
-              isFavorite={isFavorite(tool.id)}
-              onToggleFavorite={toggleFavorite}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Categories Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-5">
-        <div className="flex items-center justify-between">
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-1.5 text-teal-600 dark:text-teal-400 font-bold text-[11px] sm:text-xs uppercase tracking-wider">
-              <Layers className="w-3.5 h-3.5" />
-              <span>Browse by Category</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+              {featuredTools.map(tool => (
+                <ToolCard
+                  key={tool.id}
+                  tool={tool}
+                  isFavorite={isFavorite(tool.id)}
+                  onToggleFavorite={toggleFavorite}
+                />
+              ))}
             </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Tool Suites & Categories
-            </h2>
+          </section>
+
+          {/* ToolkitBD Core: All Tools Categorized Directly on Homepage */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14">
+            {CATEGORIES.map(category => {
+              const toolsInCat = TOOLS_REGISTRY.filter(t => t.categorySlug === category.slug);
+              if (toolsInCat.length === 0) return null;
+
+              return (
+                <section
+                  key={category.id}
+                  id={`cat-section-${category.slug}`}
+                  className="space-y-4 scroll-mt-28"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800 gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <div
+                        className="w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-xs"
+                        style={{ backgroundColor: category.color }}
+                      >
+                        <Layers className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">
+                            {category.name}
+                          </h2>
+                          <span className="text-[11px] px-2 py-0.5 rounded-full font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                            {toolsInCat.length} Tools
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">
+                          {category.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    <Link
+                      to={`/categories/${category.slug}`}
+                      className="text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 self-start sm:self-auto"
+                    >
+                      <span>Explore category</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                    {toolsInCat.map(tool => (
+                      <ToolCard
+                        key={tool.id}
+                        tool={tool}
+                        isFavorite={isFavorite(tool.id)}
+                        onToggleFavorite={toggleFavorite}
+                      />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
           </div>
-
-          <Link
-            to="/categories"
-            className="text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1"
-          >
-            <span>All categories</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
         </div>
+      )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
-          {CATEGORIES.map(category => {
-            const count = TOOLS_REGISTRY.filter(t => t.categorySlug === category.slug).length;
-            return (
-              <CategoryCard
-                key={category.id}
-                category={category}
-                toolCount={count}
-              />
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Why Choose ToolNova */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Why Choose ToolkitBD Style Platform */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <div className="p-6 sm:p-10 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-6">
           <div className="text-center max-w-2xl mx-auto space-y-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400">
-              Built For Speed & Security
+              ToolkitBD Design Philosophy
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-              Why Choose ToolNova Tool Kit?
+              Fast, Modern & Completely Free
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-              Designed from the ground up to respect digital privacy, run immediately with zero queue time, and execute locally in browser memory.
+              Everything in one view. Zero hidden fees, no upload quotas, and instant in-browser execution.
             </p>
           </div>
 
@@ -297,9 +354,19 @@ export const HomePage: React.FC = () => {
               <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">100% Client-Side Privacy</h3>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Unlimited File Size</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                Your images, audio tracks, PDFs, and code never leave your browser. Zero cloud uploads and zero risk of data leaks.
+                Work with gigabyte-sized video clips, high-res photos, and large multi-page PDF files locally without arbitrary 50MB caps.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800 space-y-2">
+              <div className="w-9 h-9 rounded-xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center">
+                <Youtube className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Consolidated YouTube Suite</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Paste a single link to inspect tags, viral hashtags, 1080p thumbnails, descriptions, embed codes, and video statistics together.
               </p>
             </div>
 
@@ -307,19 +374,9 @@ export const HomePage: React.FC = () => {
               <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                 <Zap className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Instant Hardware Processing</h3>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Day & Night Mode</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                Leverages your device's native GPU, Canvas, and Web Audio APIs for high-speed file manipulation and calculations.
-              </p>
-            </div>
-
-            <div className="p-5 rounded-2xl bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800 space-y-2">
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">100% Tested & Functional</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                No fake mockups or non-working buttons. Every tool in ToolNova performs real computations with immediate copy and file download.
+                Seamless instant toggle between light and dark themes with persistent memory and high readability across all cards.
               </p>
             </div>
           </div>
@@ -330,7 +387,7 @@ export const HomePage: React.FC = () => {
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
         <div className="text-center space-y-1">
           <span className="text-xs font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400">
-            Help & Answers
+            Common Questions
           </span>
           <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
             Frequently Asked Questions
@@ -361,27 +418,6 @@ export const HomePage: React.FC = () => {
               </div>
             );
           })}
-        </div>
-      </section>
-
-      {/* Call to Action Banner */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-teal-600 via-teal-700 to-indigo-700 text-white text-center space-y-4 shadow-lg shadow-teal-500/10">
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            Ready to Streamline Your Daily Workflow?
-          </h2>
-          <p className="text-xs sm:text-sm text-teal-100 max-w-lg mx-auto leading-relaxed">
-            Save time and protect your confidential documents with private, client-side tools designed for modern creators.
-          </p>
-          <div className="pt-2">
-            <Link
-              to="/tools"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-teal-900 font-bold text-xs sm:text-sm hover:bg-teal-50 transition-all shadow-md active:scale-98"
-            >
-              <span>Explore All Tools</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
         </div>
       </section>
     </div>

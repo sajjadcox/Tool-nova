@@ -103,7 +103,7 @@ export const AudioSpeedChanger: React.FC = () => {
         <FileUpload
           accept="audio/*"
           multiple={false}
-          maxSizeMB={50}
+          
           onFilesSelected={handleFilesSelected}
           hint="Upload any MP3, WAV, or AAC audio file to speed up or slow down playback and export."
         />

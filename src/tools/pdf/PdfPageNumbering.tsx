@@ -122,7 +122,7 @@ export const PdfPageNumbering: React.FC = () => {
         <FileUpload
           accept=".pdf,application/pdf"
           multiple={false}
-          maxSizeMB={50}
+          
           onFilesSelected={handleFilesSelected}
           hint="Upload any PDF file to stamp clean page numbers across all pages."
         />

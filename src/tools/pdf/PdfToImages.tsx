@@ -143,7 +143,7 @@ export const PdfToImages: React.FC = () => {
         <FileUpload
           accept=".pdf,application/pdf"
           multiple={false}
-          maxSizeMB={50}
+          
           onFilesSelected={handleFilesSelected}
           hint="Extract all embedded pictures, photos, or pages from any PDF document into high-res PNG/JPG files."
         />

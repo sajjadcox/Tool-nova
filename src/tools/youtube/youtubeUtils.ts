@@ -97,7 +97,7 @@ export async function fetchYouTubeOEmbed(videoUrlOrId: string): Promise<OEmbedVi
   try {
     let targetUrl = videoUrlOrId.trim();
     if (/^[a-zA-Z0-9_-]{11}$/.test(targetUrl)) {
-      targetUrl = `https://www.youtube.com/watch?v=targetUrl`;
+      targetUrl = `https://www.youtube.com/watch?v=${targetUrl}`;
     }
 
     // Try YouTube oEmbed directly

@@ -60,7 +60,7 @@ export const PdfPasswordUtility: React.FC = () => {
         <FileUpload
           accept=".pdf,application/pdf"
           multiple={false}
-          maxSizeMB={50}
+          
           onFilesSelected={handleFilesSelected}
           hint="Inspect encryption parameters, password protection, and access permissions of any PDF."
         />

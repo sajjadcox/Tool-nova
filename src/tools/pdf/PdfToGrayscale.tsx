@@ -75,7 +75,7 @@ export const PdfToGrayscale: React.FC = () => {
         <FileUpload
           accept=".pdf,application/pdf"
           multiple={false}
-          maxSizeMB={50}
+          
           onFilesSelected={handleFilesSelected}
           hint="Convert full-color PDFs to monochrome/grayscale for ink saving, printing, or archival."
         />

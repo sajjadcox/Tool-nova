@@ -56,6 +56,16 @@
     }
     </script>
     <script>
+      // Immediate theme initialization to prevent flash
+      try {
+        var savedTheme = localStorage.getItem('toolnova_theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+
       // Fix missing trailing slash on GitHub Pages subdirectory URLs (prevents relative assets 404)
       (function() {
         var p = window.location.pathname;
@@ -64,26 +74,17 @@
         }
       })();
     </script>
-    <script type="module" crossorigin src="./assets/index-ejOlt1YE.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CFP5rBIf.css">
+    <script type="module" crossorigin src="./assets/index-j-2-YfIx.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-RO8sZcfU.css">
   </head>
   <body class="bg-slate-50 text-slate-900 dark:bg-[#0B1220] dark:text-slate-100 antialiased selection:bg-teal-500 selection:text-white">
     <div id="root">
       <div id="loading-fallback" style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0B1220; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 24px;">
-        <div style="width: 48px; height: 48px; border: 4px solid #1e293b; border-top: 4px solid #14b8a6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px;"></div>
-        <h2 style="font-size: 20px; font-weight: 700; color: #14b8a6; margin: 0 0 6px 0;">ToolNova</h2>
-        <p style="color: #94a3b8; font-size: 14px; margin: 0 0 16px 0;">Every Tool You Need. All in One Place.</p>
-        <p id="troubleshooting-hint" style="display: none; max-width: 440px; font-size: 12px; color: #cbd5e1; background: #1e293b; padding: 12px 16px; border-radius: 8px; border: 1px solid #334155; line-height: 1.5;">
-          Taking longer than expected? If deploying to GitHub Pages, ensure you deploy the <strong>dist</strong> folder (via <code>npm run deploy</code> or GitHub Actions), not the unbuilt source code.
-        </p>
+        <div style="width: 44px; height: 44px; border: 3px solid #1e293b; border-top: 3px solid #14b8a6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px;"></div>
+        <h2 style="font-size: 18px; font-weight: 700; color: #14b8a6; margin: 0 0 4px 0;">ToolNova</h2>
+        <p style="color: #94a3b8; font-size: 13px; margin: 0;">ToolkitBD • Free Tools Suite</p>
       </div>
       <style>@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
-      <script>
-        setTimeout(function() {
-          var hint = document.getElementById('troubleshooting-hint');
-          if (hint) hint.style.display = 'block';
-        }, 3500);
-      </script>
     </div>
   </body>
 </html>

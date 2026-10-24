@@ -79,7 +79,7 @@ export const AudioMetadataViewer: React.FC = () => {
         <FileUpload
           accept="audio/*"
           multiple={false}
-          maxSizeMB={50}
+          
           onFilesSelected={handleFilesSelected}
           hint="Upload any audio file to inspect sample rate, channel count, duration, and encoding properties."
         />

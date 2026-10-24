@@ -15,7 +15,7 @@ interface FileUploadProps {
 
 export const FileUpload: React.FC<FileUploadProps> = ({
   accept,
-  maxSizeMB = 50,
+  maxSizeMB,
   multiple = false,
   onFilesSelected,
   label = 'Click to upload or drag & drop',
@@ -33,12 +33,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     setError(null);
 
     const validFiles: File[] = [];
-    const maxBytes = maxSizeMB * 1024 * 1024;
+    const maxBytes = maxSizeMB ? maxSizeMB * 1024 * 1024 : Infinity;
 
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
-      if (file.size > maxBytes) {
-        setError(`File "${file.name}" exceeds the maximum size limit of ${maxSizeMB}MB.`);
+      if (maxSizeMB && file.size > maxBytes) {
+        setError(`File "${file.name}" exceeds the limit of ${maxSizeMB}MB.`);
         return;
       }
       validFiles.push(file);
@@ -111,7 +111,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
               {label}
             </p>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              {accept ? `Supports: ${accept}` : 'All formats supported'} • Up to {maxSizeMB}MB
+              {accept ? `Supports: ${accept}` : 'All formats supported'} • {maxSizeMB ? `Up to ${maxSizeMB}MB` : 'Unlimited file size (100% private in browser)'}
             </p>
           </div>
 

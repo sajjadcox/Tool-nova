@@ -147,6 +147,9 @@ import { RedirectRuleGenerator } from './seo/RedirectRuleGenerator';
 import { HttpHeaderAnalyzer } from './seo/HttpHeaderAnalyzer';
 
 // YouTube Tools
+import { YouTubeAllInOne } from './youtube/YouTubeAllInOne';
+import { YouTubeGeneratorSuite } from './youtube/YouTubeGeneratorSuite';
+import { YouTubeChannelTools } from './youtube/YouTubeChannelTools';
 import { YouTubeTrendFinder } from './youtube/YouTubeTrendFinder';
 import { YouTubeTagExtractor, YouTubeTagGenerator } from './youtube/YouTubeTagTools';
 import { YouTubeHashtagExtractor, YouTubeHashtagGenerator } from './youtube/YouTubeHashtagTools';
@@ -587,65 +590,110 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
       return <HttpHeaderAnalyzer />;
 
     // YouTube Tools
-    case 'YouTubeTrendFinder':
-    case 'youtube-trend':
-      return <YouTubeTrendFinder />;
+    // YouTube Tools (All-in-One Consolidated + Specialized Tools)
+    case 'YouTubeAllInOne':
+    case 'youtube-all-in-one':
+      return <YouTubeAllInOne initialTab="overview" />;
+
     case 'YouTubeTagExtractor':
     case 'youtube-tag-extractor':
-      return <YouTubeTagExtractor />;
-    case 'YouTubeTagGenerator':
-    case 'youtube-tag-generator':
-      return <YouTubeTagGenerator />;
+      return <YouTubeAllInOne initialTab="tags" />;
+
     case 'YouTubeHashtagExtractor':
     case 'youtube-hashtag-extractor':
-      return <YouTubeHashtagExtractor />;
-    case 'YouTubeHashtagGenerator':
-    case 'youtube-hashtag-generator':
-      return <YouTubeHashtagGenerator />;
+      return <YouTubeAllInOne initialTab="hashtags" />;
+
     case 'YouTubeTitleExtractor':
     case 'youtube-title-extractor':
-      return <YouTubeTitleExtractor />;
-    case 'YouTubeTitleGenerator':
-    case 'youtube-title-generator':
-      return <YouTubeTitleGenerator />;
+      return <YouTubeAllInOne initialTab="title" />;
+
     case 'YouTubeDescriptionExtractor':
     case 'youtube-description-extractor':
-      return <YouTubeDescriptionExtractor />;
-    case 'YouTubeDescriptionGenerator':
-    case 'youtube-description-generator':
-      return <YouTubeDescriptionGenerator />;
+      return <YouTubeAllInOne initialTab="description" />;
+
     case 'YouTubeEmbedGenerator':
     case 'youtube-embed-code-generator':
-      return <YouTubeEmbedGenerator />;
-    case 'YouTubeChannelIdFinder':
-    case 'youtube-channel-id':
-      return <YouTubeChannelIdFinder />;
+      return <YouTubeAllInOne initialTab="embed" />;
+
     case 'YouTubeVideoStatistics':
     case 'youtube-video-statistics':
-      return <YouTubeVideoStatistics />;
+      return <YouTubeAllInOne initialTab="stats" />;
+
+    case 'YouTubeRegionChecker':
+    case 'youtube-region-restriction-checker':
+      return <YouTubeAllInOne initialTab="region" />;
+
+    case 'YouTubeThumbnailPreview':
+    case 'youtube-thumbnail-preview':
+      return <YouTubeAllInOne initialTab="thumbnails" />;
+
+    case 'YouTubeTitleFormatter':
+    case 'youtube-title-formatter':
+      return <YouTubeAllInOne initialTab="title" />;
+
+    case 'YouTubeDescriptionFormatter':
+    case 'youtube-description-formatter':
+      return <YouTubeAllInOne initialTab="description" />;
+
+    // Generator Suite
+    case 'YouTubeGeneratorSuite':
+    case 'youtube-generator-suite':
+      return <YouTubeGeneratorSuite />;
+
+    case 'YouTubeTagGenerator':
+    case 'youtube-tag-generator':
+      return <YouTubeGeneratorSuite initialTab="tags" />;
+
+    case 'YouTubeHashtagGenerator':
+    case 'youtube-hashtag-generator':
+      return <YouTubeGeneratorSuite initialTab="hashtags" />;
+
+    case 'YouTubeTitleGenerator':
+    case 'youtube-title-generator':
+      return <YouTubeGeneratorSuite initialTab="titles" />;
+
+    case 'YouTubeDescriptionGenerator':
+    case 'youtube-description-generator':
+      return <YouTubeGeneratorSuite initialTab="description" />;
+
+    // Channel Tools
+    case 'YouTubeChannelTools':
+    case 'youtube-channel-tools':
+      return <YouTubeChannelTools />;
+
+    case 'YouTubeChannelIdFinder':
+    case 'youtube-channel-id':
+      return <YouTubeChannelTools initialTab="id" />;
+
+    case 'YouTubeChannelLogoDownloader':
+    case 'youtube-channel-logo-downloader':
+      return <YouTubeChannelTools initialTab="logo" />;
+
+    case 'YouTubeChannelBannerDownloader':
+    case 'youtube-channel-banner-downloader':
+      return <YouTubeChannelTools initialTab="banner" />;
+
     case 'YouTubeChannelStatistics':
     case 'youtube-channel-statistics':
-      return <YouTubeChannelStatistics />;
+      return <YouTubeChannelTools initialTab="stats" />;
+
+    case 'YouTubeChannelSearch':
+    case 'youtube-channel-search':
+      return <YouTubeChannelTools initialTab="id" />;
+
+    // Financial & Trend tools
     case 'YouTubeMoneyCalculator':
     case 'youtube-money-calculator':
       return <YouTubeMoneyCalculator />;
-    case 'YouTubeRegionChecker':
-    case 'youtube-region-restriction-checker':
-      return <YouTubeRegionChecker />;
-    case 'YouTubeChannelLogoDownloader':
-    case 'youtube-channel-logo-downloader':
-      return <YouTubeChannelLogoDownloader />;
-    case 'YouTubeChannelBannerDownloader':
-    case 'youtube-channel-banner-downloader':
-      return <YouTubeChannelBannerDownloader />;
-    case 'YouTubeChannelSearch':
-    case 'youtube-channel-search':
-      return <YouTubeChannelSearch />;
+
+    case 'YouTubeTrendFinder':
+    case 'youtube-trend':
+      return <YouTubeTrendFinder />;
 
     default:
       // Category-aware fallback so we NEVER show WordCounter for PDF or other categories!
       if (tool.categorySlug === 'youtube-tools' || tool.category === 'YouTube Tools') {
-        return <YouTubeTrendFinder />;
+        return <YouTubeAllInOne />;
       }
       if (tool.categorySlug === 'pdf-tools' || tool.category === 'PDF Tools') {
         return <PdfCompressor />;
