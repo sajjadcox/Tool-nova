@@ -391,6 +391,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Client-side optimization.',
+    componentKey: 'PdfCompressor',
     relatedToolIds: ['pdf-merger', 'image-compressor']
   },
   {
@@ -406,6 +407,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Uses local canvas rendering.',
+    componentKey: 'PdfToImages',
     relatedToolIds: ['image-to-pdf']
   },
   {
@@ -421,6 +423,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'In-browser page copying.',
+    componentKey: 'PdfPageExtractor',
     relatedToolIds: ['pdf-splitter']
   },
   {
@@ -436,6 +439,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Client-side rendering.',
+    componentKey: 'PdfPageNumbering',
     relatedToolIds: ['pdf-watermark-tool']
   },
   {
@@ -451,6 +455,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Parsed locally.',
+    componentKey: 'PdfTextExtractor',
     relatedToolIds: ['word-counter']
   },
   {
@@ -466,6 +471,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Canvas filter.',
+    componentKey: 'PdfToGrayscale',
     relatedToolIds: ['image-grayscale']
   },
   {
@@ -481,6 +487,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Processed locally in memory.',
+    componentKey: 'PdfPasswordUtility',
     relatedToolIds: ['password-generator']
   },
   {
@@ -849,6 +856,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Client-side regex parser.',
+    componentKey: 'MetaTagAnalyzer',
     relatedToolIds: ['meta-tag-generator']
   },
   {
@@ -880,6 +888,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Local tag builder.',
+    componentKey: 'HreflangTagGenerator',
     relatedToolIds: ['canonical-tag-generator']
   },
   {
@@ -911,6 +920,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Local text generator.',
+    componentKey: 'RedirectRuleGenerator',
     relatedToolIds: ['slug-generator']
   },
   {
@@ -926,6 +936,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Requires backend fetch proxy due to browser CORS security restrictions.',
+    componentKey: 'HttpHeaderAnalyzer',
     relatedToolIds: ['url-safety-syntax-checker']
   },
 
@@ -1161,6 +1172,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'In-browser parser.',
+    componentKey: 'JavascriptFormatter',
     relatedToolIds: ['json-formatter']
   },
   {
@@ -1176,6 +1188,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Client-side processing.',
+    componentKey: 'JavascriptMinifier',
     relatedToolIds: ['javascript-formatter']
   },
 
@@ -1680,6 +1693,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Computed via HMAC-SHA1 in browser.',
+    componentKey: 'TotpCodeGenerator',
     relatedToolIds: ['password-generator']
   },
   {
@@ -1830,6 +1844,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Template engine in browser.',
+    componentKey: 'YouTubeDescriptionFormatter',
     relatedToolIds: ['youtube-thumbnail-preview']
   },
   {
@@ -1845,6 +1860,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Local canvas check.',
+    componentKey: 'OpenGraphImagePreview',
     relatedToolIds: ['open-graph-preview']
   },
   {
@@ -1860,6 +1876,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Client-side simulation.',
+    componentKey: 'FacebookPostPreview',
     relatedToolIds: ['serp-snippet-preview']
   },
   {
@@ -2199,6 +2216,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Client-side rules parser.',
+    componentKey: 'GrammarChecker',
     relatedToolIds: ['spell-checker']
   },
   {
@@ -2214,6 +2232,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Local dictionary search.',
+    componentKey: 'SpellChecker',
     relatedToolIds: ['grammar-checker']
   },
   {
@@ -2245,6 +2264,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'In-browser synonym substitution.',
+    componentKey: 'SentenceRewriter',
     relatedToolIds: ['case-converter']
   },
   {
@@ -2260,6 +2280,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'external-api',
     privacyInfo: 'Requires translation API endpoint.',
+    componentKey: 'TextTranslator',
     relatedToolIds: ['case-converter']
   },
 
@@ -2343,6 +2364,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'AudioBuffer slicing in browser.',
+    componentKey: 'AudioTrimmer',
     relatedToolIds: ['audio-waveform-viewer']
   },
   {
@@ -2459,6 +2481,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     status: 'Tested',
     processingMode: 'client',
     privacyInfo: 'Canvas frame capturing.',
+    componentKey: 'VideoToGif',
     relatedToolIds: ['video-thumbnail-extractor']
   },
 

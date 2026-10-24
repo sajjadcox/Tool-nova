@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Sparkles, 
@@ -42,19 +42,22 @@ export const HomePage: React.FC = () => {
 
   const isSearchOrFilterActive = searchQuery.trim() !== '' || selectedCategory !== 'all';
 
+  useEffect(() => {
+    if (isSearchOrFilterActive) {
+      const timer = setTimeout(() => {
+        searchResultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [searchQuery, selectedCategory, isSearchOrFilterActive]);
+
   const handleKeywordClick = (kw: string) => {
     setSearchQuery(kw);
     setSelectedCategory('all');
-    setTimeout(() => {
-      searchResultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
   };
 
   const handleCategorySelect = (catId: string) => {
     setSelectedCategory(catId);
-    setTimeout(() => {
-      searchResultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
   };
 
   const popularTools = TOOLS_REGISTRY.filter(t => t.popular).slice(0, 8);
