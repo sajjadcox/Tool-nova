@@ -2,6 +2,15 @@ import { CategoryDefinition } from '../types';
 
 export const CATEGORIES: CategoryDefinition[] = [
   {
+    id: 'youtube-tools',
+    slug: 'youtube-tools',
+    name: 'YouTube Tools',
+    description: 'Optimize videos, extract tags & titles, generate viral hashtags, calculate earnings, and inspect channel stats.',
+    icon: 'Youtube',
+    color: '#ef4444',
+    gradient: 'from-red-600 to-rose-600'
+  },
+  {
     id: 'image-tools',
     slug: 'image-tools',
     name: 'Image Tools',

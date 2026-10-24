@@ -63,15 +63,17 @@ export const HomePage: React.FC = () => {
   const popularTools = TOOLS_REGISTRY.filter(t => t.popular).slice(0, 8);
 
   const popularKeywords = [
+    'YouTube Tools',
     'Image Compressor',
     'PDF Merger',
+    'YouTube Tag Extractor',
     'Audio Trimmer',
     'Word Counter',
+    'YouTube Money Calculator',
     'JSON Formatter',
     'Password Generator',
     'QR Code',
-    'Screen Recorder',
-    'Unit Converter'
+    'Screen Recorder'
   ];
 
   const faqs = [

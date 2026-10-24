@@ -146,6 +146,21 @@ import { HreflangTagGenerator } from './seo/HreflangTagGenerator';
 import { RedirectRuleGenerator } from './seo/RedirectRuleGenerator';
 import { HttpHeaderAnalyzer } from './seo/HttpHeaderAnalyzer';
 
+// YouTube Tools
+import { YouTubeTrendFinder } from './youtube/YouTubeTrendFinder';
+import { YouTubeTagExtractor, YouTubeTagGenerator } from './youtube/YouTubeTagTools';
+import { YouTubeHashtagExtractor, YouTubeHashtagGenerator } from './youtube/YouTubeHashtagTools';
+import { YouTubeTitleExtractor, YouTubeTitleGenerator } from './youtube/YouTubeTitleTools';
+import { YouTubeDescriptionExtractor, YouTubeDescriptionGenerator } from './youtube/YouTubeDescriptionTools';
+import { YouTubeEmbedGenerator } from './youtube/YouTubeEmbedGenerator';
+import { YouTubeChannelIdFinder } from './youtube/YouTubeChannelIdFinder';
+import { YouTubeVideoStatistics } from './youtube/YouTubeVideoStatistics';
+import { YouTubeChannelStatistics } from './youtube/YouTubeChannelStatistics';
+import { YouTubeMoneyCalculator } from './youtube/YouTubeMoneyCalculator';
+import { YouTubeRegionChecker } from './youtube/YouTubeRegionChecker';
+import { YouTubeChannelLogoDownloader, YouTubeChannelBannerDownloader } from './youtube/YouTubeChannelAssets';
+import { YouTubeChannelSearch } from './youtube/YouTubeChannelSearch';
+
 interface ToolResolverProps {
   tool: ToolDefinition;
 }
@@ -571,8 +586,67 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
     case 'http-header-analyzer':
       return <HttpHeaderAnalyzer />;
 
+    // YouTube Tools
+    case 'YouTubeTrendFinder':
+    case 'youtube-trend':
+      return <YouTubeTrendFinder />;
+    case 'YouTubeTagExtractor':
+    case 'youtube-tag-extractor':
+      return <YouTubeTagExtractor />;
+    case 'YouTubeTagGenerator':
+    case 'youtube-tag-generator':
+      return <YouTubeTagGenerator />;
+    case 'YouTubeHashtagExtractor':
+    case 'youtube-hashtag-extractor':
+      return <YouTubeHashtagExtractor />;
+    case 'YouTubeHashtagGenerator':
+    case 'youtube-hashtag-generator':
+      return <YouTubeHashtagGenerator />;
+    case 'YouTubeTitleExtractor':
+    case 'youtube-title-extractor':
+      return <YouTubeTitleExtractor />;
+    case 'YouTubeTitleGenerator':
+    case 'youtube-title-generator':
+      return <YouTubeTitleGenerator />;
+    case 'YouTubeDescriptionExtractor':
+    case 'youtube-description-extractor':
+      return <YouTubeDescriptionExtractor />;
+    case 'YouTubeDescriptionGenerator':
+    case 'youtube-description-generator':
+      return <YouTubeDescriptionGenerator />;
+    case 'YouTubeEmbedGenerator':
+    case 'youtube-embed-code-generator':
+      return <YouTubeEmbedGenerator />;
+    case 'YouTubeChannelIdFinder':
+    case 'youtube-channel-id':
+      return <YouTubeChannelIdFinder />;
+    case 'YouTubeVideoStatistics':
+    case 'youtube-video-statistics':
+      return <YouTubeVideoStatistics />;
+    case 'YouTubeChannelStatistics':
+    case 'youtube-channel-statistics':
+      return <YouTubeChannelStatistics />;
+    case 'YouTubeMoneyCalculator':
+    case 'youtube-money-calculator':
+      return <YouTubeMoneyCalculator />;
+    case 'YouTubeRegionChecker':
+    case 'youtube-region-restriction-checker':
+      return <YouTubeRegionChecker />;
+    case 'YouTubeChannelLogoDownloader':
+    case 'youtube-channel-logo-downloader':
+      return <YouTubeChannelLogoDownloader />;
+    case 'YouTubeChannelBannerDownloader':
+    case 'youtube-channel-banner-downloader':
+      return <YouTubeChannelBannerDownloader />;
+    case 'YouTubeChannelSearch':
+    case 'youtube-channel-search':
+      return <YouTubeChannelSearch />;
+
     default:
       // Category-aware fallback so we NEVER show WordCounter for PDF or other categories!
+      if (tool.categorySlug === 'youtube-tools' || tool.category === 'YouTube Tools') {
+        return <YouTubeTrendFinder />;
+      }
       if (tool.categorySlug === 'pdf-tools' || tool.category === 'PDF Tools') {
         return <PdfCompressor />;
       }
