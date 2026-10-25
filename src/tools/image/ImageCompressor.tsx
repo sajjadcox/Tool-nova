@@ -1,304 +1,474 @@
 import React, { useState } from 'react';
-import { Sliders, Download, RefreshCw, CheckCircle2, ArrowRight } from 'lucide-react';
+import { 
+  Sliders, 
+  Download, 
+  RefreshCw, 
+  CheckCircle2, 
+  ArrowRight, 
+  Target, 
+  Zap, 
+  FileImage, 
+  Layers,
+  Sparkles,
+  Maximize2
+} from 'lucide-react';
 import { FileUpload } from '../../components/common/FileUpload';
 import { DownloadButton } from '../../components/common/DownloadButton';
 import { ErrorMessage } from '../../components/common/ErrorMessage';
 import { ProgressIndicator } from '../../components/common/ProgressIndicator';
 import { ShareResultButton } from '../../components/common/ShareResultButton';
+import { 
+  compressSingleImage, 
+  formatBytes, 
+  CompressionOptions, 
+  CompressionResult 
+} from './compressionEngine';
 
-export const ImageCompressor: React.FC = () => {
+export const ImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ initialTargetKB }) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [quality, setQuality] = useState<number>(0.8);
-  const [format, setFormat] = useState<string>('auto'); // auto, image/jpeg, image/webp, image/png
-  const [compressedBlob, setCompressedBlob] = useState<Blob | null>(null);
-  const [compressedUrl, setCompressedUrl] = useState<string | null>(null);
-  const [compressedSize, setCompressedSize] = useState<number>(0);
+  const [quality, setQuality] = useState<number>(0.75);
+  const [format, setFormat] = useState<'auto' | 'image/jpeg' | 'image/webp' | 'image/png'>('image/webp');
+  const [maxDimension, setMaxDimension] = useState<number>(1920);
+  const [targetSizeKB, setTargetSizeKB] = useState<number>(initialTargetKB || 0);
+  const [mode, setMode] = useState<'balanced' | 'extreme' | 'target' | 'custom'>(
+    initialTargetKB ? 'target' : 'balanced'
+  );
+
+  const [compressedResult, setCompressedResult] = useState<CompressionResult | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [maxDimension, setMaxDimension] = useState<number>(1920);
+  const [compareMode, setCompareMode] = useState<'side-by-side' | 'compressed'>('side-by-side');
 
   const handleFilesSelected = (files: File[]) => {
     if (files.length === 0) return;
     const selectedFile = files[0];
     if (!selectedFile.type.startsWith('image/')) {
-      setError('Please select a valid image file (JPG, PNG, or WebP).');
+      setError('Please select a valid image file (JPG, PNG, WebP, GIF, or BMP).');
       return;
     }
     setError(null);
     setFile(selectedFile);
     const url = URL.createObjectURL(selectedFile);
     setPreviewUrl(url);
-    compressImage(selectedFile, quality, maxDimension, format);
+    runCompression(selectedFile, quality, maxDimension, format, mode === 'target' ? targetSizeKB : 0);
   };
 
-  const compressImage = (sourceFile: File, q: number, maxDim: number, fmt: string) => {
+  const runCompression = async (
+    sourceFile: File,
+    q: number,
+    maxDim: number,
+    fmt: 'auto' | 'image/jpeg' | 'image/webp' | 'image/png',
+    targetKB: number
+  ) => {
     setIsProcessing(true);
     setError(null);
 
-    const img = new Image();
-    const objectUrl = URL.createObjectURL(sourceFile);
+    try {
+      const options: CompressionOptions = {
+        quality: q,
+        format: fmt,
+        maxDimension: maxDim,
+        targetSizeKB: targetKB > 0 ? targetKB : undefined
+      };
 
-    img.onload = () => {
-      URL.revokeObjectURL(objectUrl);
-      const canvas = document.createElement('canvas');
-      let { width, height } = img;
-
-      // Scale down if larger than maxDimension
-      if (width > maxDim || height > maxDim) {
-        if (width > height) {
-          height = Math.round((height * maxDim) / width);
-          width = maxDim;
-        } else {
-          width = Math.round((width * maxDim) / height);
-          height = maxDim;
-        }
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        setError('Canvas context could not be initialized.');
-        setIsProcessing(false);
-        return;
-      }
-
-      // Draw image
-      ctx.drawImage(img, 0, 0, width, height);
-
-      // Determine output MIME type
-      let outputType = fmt;
-      if (fmt === 'auto') {
-        outputType = sourceFile.type === 'image/png' ? 'image/jpeg' : sourceFile.type;
-      }
-
-      canvas.toBlob(
-        (blob) => {
-          if (!blob) {
-            setError('Compression failed. Please try again.');
-            setIsProcessing(false);
-            return;
-          }
-          if (compressedUrl) {
-            URL.revokeObjectURL(compressedUrl);
-          }
-          const newUrl = URL.createObjectURL(blob);
-          setCompressedBlob(blob);
-          setCompressedUrl(newUrl);
-          setCompressedSize(blob.size);
-          setIsProcessing(false);
-        },
-        outputType,
-        q
-      );
-    };
-
-    img.onerror = () => {
-      URL.revokeObjectURL(objectUrl);
-      setError('Failed to load image. The file may be corrupted.');
+      const result = await compressSingleImage(sourceFile, options);
+      setCompressedResult(result);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to compress image.');
+    } finally {
       setIsProcessing(false);
-    };
+    }
+  };
 
-    img.src = objectUrl;
+  const handleModeChange = (newMode: 'balanced' | 'extreme' | 'target' | 'custom') => {
+    setMode(newMode);
+    let newQ = quality;
+    let newDim = maxDimension;
+    let newFmt = format;
+    let newTarget = 0;
+
+    if (newMode === 'balanced') {
+      newQ = 0.75;
+      newDim = 1920;
+      newFmt = 'image/webp';
+    } else if (newMode === 'extreme') {
+      newQ = 0.5;
+      newDim = 1280;
+      newFmt = 'image/webp';
+    } else if (newMode === 'target') {
+      newTarget = targetSizeKB || 100;
+      newFmt = 'image/jpeg';
+      setTargetSizeKB(newTarget);
+    }
+
+    setQuality(newQ);
+    setMaxDimension(newDim);
+    setFormat(newFmt);
+
+    if (file) {
+      runCompression(file, newQ, newDim, newFmt, newTarget);
+    }
   };
 
   const handleQualityChange = (newQ: number) => {
     setQuality(newQ);
     if (file) {
-      compressImage(file, newQ, maxDimension, format);
+      runCompression(file, newQ, maxDimension, format, 0);
     }
   };
 
   const handleDimensionChange = (newDim: number) => {
     setMaxDimension(newDim);
     if (file) {
-      compressImage(file, quality, newDim, format);
+      runCompression(file, quality, newDim, format, mode === 'target' ? targetSizeKB : 0);
     }
   };
 
-  const handleFormatChange = (newFmt: string) => {
+  const handleFormatChange = (newFmt: 'auto' | 'image/jpeg' | 'image/webp' | 'image/png') => {
     setFormat(newFmt);
     if (file) {
-      compressImage(file, quality, maxDimension, newFmt);
+      runCompression(file, quality, maxDimension, newFmt, mode === 'target' ? targetSizeKB : 0);
     }
   };
 
-  const handleReset = () => {
+  const handleTargetKBChange = (kb: number) => {
+    setTargetSizeKB(kb);
+    if (file) {
+      runCompression(file, quality, maxDimension, format, kb);
+    }
+  };
+
+  const resetAll = () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
-    if (compressedUrl) URL.revokeObjectURL(compressedUrl);
+    if (compressedResult?.dataUrl) URL.revokeObjectURL(compressedResult.dataUrl);
     setFile(null);
     setPreviewUrl(null);
-    setCompressedBlob(null);
-    setCompressedUrl(null);
+    setCompressedResult(null);
     setError(null);
   };
 
-  const formatSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
-  };
-
-  const reductionPercent = file && compressedSize > 0
-    ? Math.max(0, Math.round(((file.size - compressedSize) / file.size) * 100))
-    : 0;
-
-  const targetExt = format === 'image/webp' ? 'webp' : format === 'image/png' ? 'png' : 'jpg';
-
   return (
     <div className="space-y-6">
-      <ErrorMessage message={error || undefined} onDismiss={() => setError(null)} />
+      {error && <ErrorMessage message={error} onDismiss={() => setError(null)} />}
 
       {!file ? (
-        <FileUpload
-          accept="image/png,image/jpeg,image/webp,image/avif"
-          onFilesSelected={handleFilesSelected}
-          label="Choose an image to compress"
-          hint="Zero server uploads. Processed client-side in your browser."
-        />
+        <div className="space-y-4">
+          <FileUpload
+            accept="image/*"
+            multiple={false}
+            onFilesSelected={handleFilesSelected}
+            label="Upload Any Image to Compress"
+            hint="JPG, PNG, WebP, GIF, or BMP • 100% Private In-Browser • Unlimited File Size"
+          />
+
+          {/* Quick Target Presets before uploading */}
+          <div className="bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <span className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+              <Target className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+              <span>Common Requirements:</span>
+            </span>
+            <div className="flex items-center gap-2 flex-wrap">
+              {[
+                { label: 'Compress to < 50 KB', kb: 50 },
+                { label: 'Compress to < 100 KB', kb: 100 },
+                { label: 'Compress to < 200 KB', kb: 200 },
+                { label: 'Compress to < 500 KB', kb: 500 }
+              ].map(preset => (
+                <button
+                  key={preset.kb}
+                  type="button"
+                  onClick={() => {
+                    setMode('target');
+                    setTargetSizeKB(preset.kb);
+                  }}
+                  className={`px-3 py-1.5 rounded-lg border font-semibold transition-all ${
+                    mode === 'target' && targetSizeKB === preset.kb
+                      ? 'bg-teal-600 text-white border-teal-600 shadow-xs'
+                      : 'border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300'
+                  }`}
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="space-y-6">
-          {/* Controls Bar */}
-          <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-center">
-            {/* Quality Slider */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                <span>Quality</span>
-                <span className="text-teal-600 dark:text-teal-400 font-mono">{Math.round(quality * 100)}%</span>
-              </div>
-              <input
-                type="range"
-                min="0.1"
-                max="1.0"
-                step="0.05"
-                value={quality}
-                onChange={(e) => handleQualityChange(parseFloat(e.target.value))}
-                className="w-full accent-teal-600 cursor-pointer"
-              />
-              <div className="flex justify-between text-[10px] text-slate-400 mt-1">
-                <span>Smaller</span>
-                <span>Best</span>
-              </div>
-            </div>
-
-            {/* Max Resolution Limit */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                <span>Max Dimension</span>
-                <span className="text-teal-600 dark:text-teal-400 font-mono">{maxDimension}px</span>
-              </div>
-              <select
-                value={maxDimension}
-                onChange={(e) => handleDimensionChange(parseInt(e.target.value))}
-                className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 outline-none focus:border-teal-500"
-              >
-                <option value={3840}>4K Ultra HD (3840px)</option>
-                <option value={1920}>Full HD (1920px)</option>
-                <option value={1280}>HD (1280px)</option>
-                <option value={800}>Web Standard (800px)</option>
-                <option value={500}>Thumbnail (500px)</option>
-              </select>
-            </div>
-
-            {/* Target Format */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
-                <span>Target Format</span>
-                <span className="text-teal-600 dark:text-teal-400 uppercase font-mono">{targetExt}</span>
-              </div>
-              <select
-                value={format}
-                onChange={(e) => handleFormatChange(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 outline-none focus:border-teal-500"
-              >
-                <option value="auto">Auto (Smart Optimized)</option>
-                <option value="image/jpeg">JPEG (.jpg)</option>
-                <option value="image/webp">WebP (.webp)</option>
-                <option value="image/png">PNG (.png)</option>
-              </select>
-            </div>
-
-            {/* Reset / Change file */}
-            <div className="flex items-center gap-2 justify-end">
+          {/* Strategy Selection Bar */}
+          <div className="bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                <span>Compression Strategy & Controls</span>
+              </span>
               <button
                 type="button"
-                onClick={handleReset}
-                className="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-1.5"
+                onClick={resetAll}
+                className="text-xs font-semibold text-rose-500 hover:text-rose-600 transition-colors"
               >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Upload New</span>
+                Change Image
               </button>
             </div>
-          </div>
 
-          {/* Stats Bar */}
-          <div className="p-4 rounded-2xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3 sm:gap-6 flex-wrap text-xs">
-              <div>
-                <span className="text-slate-400 block text-[11px]">Original Size</span>
-                <span className="font-bold text-slate-700 dark:text-slate-300 font-mono text-sm">{formatSize(file.size)}</span>
-              </div>
-              <ArrowRight className="w-4 h-4 text-slate-400" />
-              <div>
-                <span className="text-slate-400 block text-[11px]">Compressed Size</span>
-                <span className="font-bold text-teal-600 dark:text-teal-400 font-mono text-sm">{formatSize(compressedSize)}</span>
-              </div>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500 text-white">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>{reductionPercent}% Saved</span>
-              </span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button
+                type="button"
+                onClick={() => handleModeChange('balanced')}
+                className={`p-3 rounded-xl border text-left transition-all ${
+                  mode === 'balanced'
+                    ? 'border-teal-500 bg-teal-50/50 dark:bg-teal-950/30 text-teal-700 dark:text-teal-300 ring-2 ring-teal-500/20'
+                    : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
+                }`}
+              >
+                <p className="font-bold text-xs">Balanced (Recommended)</p>
+                <p className="text-[11px] text-slate-500">60-75% drop, high clarity</p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleModeChange('extreme')}
+                className={`p-3 rounded-xl border text-left transition-all ${
+                  mode === 'extreme'
+                    ? 'border-teal-500 bg-teal-50/50 dark:bg-teal-950/30 text-teal-700 dark:text-teal-300 ring-2 ring-teal-500/20'
+                    : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
+                }`}
+              >
+                <p className="font-bold text-xs">Maximum (80-90%)</p>
+                <p className="text-[11px] text-slate-500">Ultra compact web size</p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleModeChange('target')}
+                className={`p-3 rounded-xl border text-left transition-all ${
+                  mode === 'target'
+                    ? 'border-teal-500 bg-teal-50/50 dark:bg-teal-950/30 text-teal-700 dark:text-teal-300 ring-2 ring-teal-500/20'
+                    : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
+                }`}
+              >
+                <p className="font-bold text-xs">Target File Size</p>
+                <p className="text-[11px] text-slate-500">Hit exact KB requirement</p>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleModeChange('custom')}
+                className={`p-3 rounded-xl border text-left transition-all ${
+                  mode === 'custom'
+                    ? 'border-teal-500 bg-teal-50/50 dark:bg-teal-950/30 text-teal-700 dark:text-teal-300 ring-2 ring-teal-500/20'
+                    : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
+                }`}
+              >
+                <p className="font-bold text-xs">Custom Controls</p>
+                <p className="text-[11px] text-slate-500">Fine-tune sliders</p>
+              </button>
             </div>
 
-            <div className="flex items-center gap-2 flex-wrap">
-              <ShareResultButton
-                toolName="Image Compressor"
-                resultSummary={`Compressed ${file.name} by ${reductionPercent}% (from ${formatSize(file.size)} down to ${formatSize(compressedSize)}).`}
-              />
-
-              {compressedUrl && (
-                <DownloadButton
-                  filename={`compressed-${file.name.replace(/\.[^/.]+$/, '')}.${targetExt}`}
-                  dataUrl={compressedUrl}
-                  label="Download Compressed"
-                />
+            {/* Sub-controls based on mode */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              {mode === 'target' ? (
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex justify-between">
+                    <span>Target Maximum Size:</span>
+                    <span className="text-teal-600 font-bold">{targetSizeKB || 100} KB</span>
+                  </label>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {[50, 100, 200, 300, 500].map(kb => (
+                      <button
+                        key={kb}
+                        type="button"
+                        onClick={() => handleTargetKBChange(kb)}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold border transition-colors ${
+                          targetSizeKB === kb
+                            ? 'bg-teal-600 text-white border-teal-600'
+                            : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100'
+                        }`}
+                      >
+                        &lt; {kb} KB
+                      </button>
+                    ))}
+                    <input
+                      type="number"
+                      min="10"
+                      max="10000"
+                      value={targetSizeKB}
+                      onChange={(e) => handleTargetKBChange(Math.max(10, parseInt(e.target.value) || 100))}
+                      className="w-24 px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-xs font-mono"
+                      placeholder="Custom KB"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex justify-between">
+                    <span>Compression Quality:</span>
+                    <span className="text-teal-600 font-bold">{Math.round(quality * 100)}%</span>
+                  </label>
+                  <input
+                    type="range"
+                    min="0.05"
+                    max="0.95"
+                    step="0.05"
+                    value={quality}
+                    onChange={(e) => handleQualityChange(parseFloat(e.target.value))}
+                    className="w-full accent-teal-600 cursor-pointer"
+                  />
+                </div>
               )}
+
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Target Format:
+                </label>
+                <select
+                  value={format}
+                  onChange={(e) => handleFormatChange(e.target.value as any)}
+                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-xs font-semibold text-slate-800 dark:text-slate-200"
+                >
+                  <option value="image/webp">WebP (Best 75% savings)</option>
+                  <option value="image/jpeg">JPEG (Standard photo compatibility)</option>
+                  <option value="auto">Auto (Match input)</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Max Resolution:
+                </label>
+                <select
+                  value={maxDimension}
+                  onChange={(e) => handleDimensionChange(parseInt(e.target.value, 10))}
+                  className="w-full px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-xs font-semibold text-slate-800 dark:text-slate-200"
+                >
+                  <option value={0}>Original Resolution (No downscale)</option>
+                  <option value={2560}>2560px (2K QHD)</option>
+                  <option value={1920}>1920px (Full HD)</option>
+                  <option value={1280}>1280px (HD Web)</option>
+                  <option value={800}>800px (Mobile / Passport)</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          {isProcessing && <ProgressIndicator statusText="Optimizing image frames..." />}
+          {/* Results Summary Box */}
+          {compressedResult && (
+            <div className="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-5 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <span className="font-black text-lg text-emerald-900 dark:text-emerald-200">
+                      Reduced by {compressedResult.percentSaved}% ({formatBytes(compressedResult.originalSize - compressedResult.compressedSize)} saved)
+                    </span>
+                  </div>
+                  <p className="text-xs text-emerald-700 dark:text-emerald-300">
+                    Original: <strong className="font-mono">{formatBytes(compressedResult.originalSize)}</strong> &rarr; Compressed: <strong className="font-mono">{formatBytes(compressedResult.compressedSize)}</strong> • Output dimensions: {compressedResult.width} &times; {compressedResult.height}px
+                  </p>
+                </div>
 
-          {/* Side by side Preview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Original Preview ({formatSize(file.size)})
-              </span>
-              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-2 min-h-[240px]">
-                {previewUrl && (
-                  <img
-                    src={previewUrl}
-                    alt="Original Preview"
-                    className="max-h-[320px] w-auto object-contain rounded-lg"
+                <div className="flex items-center gap-2 shrink-0">
+                  <DownloadButton
+                    blob={compressedResult.blob}
+                    filename={`${file.name.substring(0, file.name.lastIndexOf('.')) || file.name}-compressed.${format === 'image/jpeg' ? 'jpg' : 'webp'}`}
+                    label={`Download (${formatBytes(compressedResult.compressedSize)})`}
                   />
-                )}
+                  <button
+                    type="button"
+                    onClick={resetAll}
+                    className="p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 hover:bg-white dark:hover:bg-slate-800 text-emerald-700 dark:text-emerald-300"
+                    title="Upload another image"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Visual Comparison Preview */}
+          <div className="bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                Visual Quality Inspection
+              </h3>
+              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setCompareMode('side-by-side')}
+                  className={`px-2.5 py-1 rounded-lg transition-colors ${
+                    compareMode === 'side-by-side'
+                      ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
+                      : 'text-slate-500'
+                  }`}
+                >
+                  Side by Side
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCompareMode('compressed')}
+                  className={`px-2.5 py-1 rounded-lg transition-colors ${
+                    compareMode === 'compressed'
+                      ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
+                      : 'text-slate-500'
+                  }`}
+                >
+                  Compressed Only
+                </button>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-teal-600 dark:text-teal-400 uppercase tracking-wider">
-                Compressed Result ({formatSize(compressedSize)})
-              </span>
-              <div className="rounded-2xl border border-teal-200 dark:border-teal-900/60 overflow-hidden bg-slate-100 dark:bg-slate-900 flex items-center justify-center p-2 min-h-[240px]">
-                {compressedUrl && (
+            {compareMode === 'side-by-side' ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-semibold text-slate-500">
+                    <span>Original ({file.name})</span>
+                    <span>{formatBytes(file.size)}</span>
+                  </div>
+                  <div className="h-64 sm:h-80 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center p-2">
+                    {previewUrl && (
+                      <img
+                        src={previewUrl}
+                        alt="Original"
+                        className="max-h-full max-w-full object-contain rounded-lg"
+                      />
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-semibold text-teal-600 dark:text-teal-400">
+                    <span>Compressed Result</span>
+                    <span>{compressedResult ? formatBytes(compressedResult.compressedSize) : 'Processing...'}</span>
+                  </div>
+                  <div className="h-64 sm:h-80 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-900 border border-teal-500/30 flex items-center justify-center p-2 relative">
+                    {isProcessing ? (
+                      <div className="flex flex-col items-center gap-2 text-xs text-teal-600">
+                        <RefreshCw className="w-6 h-6 animate-spin" />
+                        <span>Applying compression...</span>
+                      </div>
+                    ) : compressedResult?.dataUrl ? (
+                      <img
+                        src={compressedResult.dataUrl}
+                        alt="Compressed"
+                        className="max-h-full max-w-full object-contain rounded-lg"
+                      />
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="h-80 sm:h-96 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center p-2">
+                {compressedResult?.dataUrl && (
                   <img
-                    src={compressedUrl}
-                    alt="Compressed Preview"
-                    className="max-h-[320px] w-auto object-contain rounded-lg"
+                    src={compressedResult.dataUrl}
+                    alt="Compressed Full Preview"
+                    className="max-h-full max-w-full object-contain rounded-lg"
                   />
                 )}
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}

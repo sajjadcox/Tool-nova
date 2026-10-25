@@ -97,7 +97,7 @@ export const HomePage: React.FC = () => {
     },
     {
       q: 'Is ToolNova free to use with all tools available?',
-      a: 'Yes, ToolNova (built in ToolkitBD style) is 100% free with unlimited usage, zero file size restrictions, and no registration or account required.'
+      a: 'Yes, ToolNova is 100% free with unlimited usage, zero file size restrictions, and no registration or account required.'
     },
     {
       q: 'How does the YouTube All-in-One Multi-Extractor work?',
@@ -115,7 +115,7 @@ export const HomePage: React.FC = () => {
       <section className="text-center pt-8 sm:pt-12 pb-2 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-4 sm:space-y-5">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 dark:bg-teal-950/60 border border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-300 text-[11px] sm:text-xs font-semibold">
           <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
-          <span>ToolkitBD Style • 150+ Free Web Tools • Unlimited File Size • 100% Private</span>
+          <span>250+ Professional Web Tools • Unlimited Bulk Processing • 100% Private</span>
         </div>
 
         <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.18] max-w-4xl mx-auto">
@@ -157,7 +157,7 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Category Navigation Pills (ToolkitBD Style Sticky / Scrollable Filter) */}
+      {/* Category Navigation Pills (Sticky / Scrollable Filter) */}
       <section className="sticky top-16 z-30 bg-white/95 dark:bg-[#0B1220]/95 backdrop-blur-md border-y border-slate-200/80 dark:border-slate-800/80 py-2.5 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 overflow-x-auto scrollbar-none">
           <button
@@ -242,7 +242,7 @@ export const HomePage: React.FC = () => {
         </section>
       )}
 
-      {/* When Normal Home View (All Tools): Show Featured Tools + Full Category Tool Sections (ToolkitBD Layout) */}
+      {/* When Normal Home View (All Tools): Show Featured Tools + Full Category Tool Sections */}
       {!isSearchActive && selectedCategory === 'all' && (
         <div className="space-y-12 sm:space-y-16">
           {/* Featured / Trending Quick Access */}
@@ -273,7 +273,7 @@ export const HomePage: React.FC = () => {
             </div>
           </section>
 
-          {/* ToolkitBD Core: All Tools Categorized Directly on Homepage */}
+          {/* All Tools Categorized Directly on Homepage */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14">
             {CATEGORIES.map(category => {
               const toolsInCat = TOOLS_REGISTRY.filter(t => t.categorySlug === category.slug);
@@ -334,12 +334,12 @@ export const HomePage: React.FC = () => {
         </div>
       )}
 
-      {/* Why Choose ToolkitBD Style Platform */}
+      {/* Why Choose ToolNova */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <div className="p-6 sm:p-10 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-6">
           <div className="text-center max-w-2xl mx-auto space-y-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400">
-              ToolkitBD Design Philosophy
+              ToolNova Philosophy
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
               Fast, Modern & Completely Free

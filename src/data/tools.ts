@@ -1,4 +1,5 @@
 import { ToolDefinition } from '../types';
+import { EXTRA_TOOLS } from './extraTools';
 
 export const TOOLS_REGISTRY: ToolDefinition[] = [
   // ==========================================
@@ -2636,7 +2637,7 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     category: 'YouTube Tools',
     categorySlug: 'youtube-tools',
     description: 'Paste one video link to get everything: 1080p thumbnails, tags, hashtags, optimized title, timestamps chapters, embed code, video statistics, and channel details.',
-    keywords: ['youtube all in one', 'video inspector', 'youtube multi extractor', 'extract youtube link', 'download thumbnail', 'get tags', 'youtube metadata', 'toolkitbd youtube'],
+    keywords: ['youtube all in one', 'video inspector', 'youtube multi extractor', 'extract youtube link', 'download thumbnail', 'get tags', 'youtube metadata', 'video seo tool'],
     icon: 'Youtube',
     route: '/tools/youtube-all-in-one',
     status: 'Tested',
@@ -2983,5 +2984,6 @@ export const TOOLS_REGISTRY: ToolDefinition[] = [
     privacyInfo: 'Zero logging of search terms.',
     relatedToolIds: ['youtube-channel-id', 'youtube-trend'],
     componentKey: 'YouTubeChannelSearch'
-  }
+  },
+  ...EXTRA_TOOLS
 ];

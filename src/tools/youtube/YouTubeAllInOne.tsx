@@ -326,7 +326,7 @@ export const YouTubeAllInOne: React.FC<YouTubeAllInOneProps> = ({ initialTab = '
         <div className="relative z-10 space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold text-white">
             <Youtube className="w-4 h-4 text-white" />
-            <span>All-in-One YouTube Suite (ToolkitBD Style)</span>
+            <span>All-in-One YouTube Multi-Extractor Suite</span>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight">
             YouTube Video Inspector & Multi-Extractor
@@ -408,7 +408,7 @@ export const YouTubeAllInOne: React.FC<YouTubeAllInOneProps> = ({ initialTab = '
         )}
       </div>
 
-      {/* Fast Navigation Tabs (ToolkitBD style) */}
+      {/* Fast Navigation Tabs */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-slate-200 dark:border-slate-800 scrollbar-none">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -552,7 +552,7 @@ export const YouTubeAllInOne: React.FC<YouTubeAllInOneProps> = ({ initialTab = '
                 <div className="p-3.5 rounded-xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 text-xs text-teal-800 dark:text-teal-200 space-y-1">
                   <p className="font-bold flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
-                    <span>ToolkitBD All-in-One Ready</span>
+                    <span>All-in-One Multi-Extractor Ready</span>
                   </p>
                   <p className="text-[11px] leading-relaxed">
                     Click any tab above to get custom embed codes, high-res thumbnails, formatted titles, timestamp chapters, or SEO tags.

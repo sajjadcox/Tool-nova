@@ -3,6 +3,9 @@ import { ToolDefinition } from '../types';
 
 // Image Tools
 import { ImageCompressor } from './image/ImageCompressor';
+import { BulkImageCompressor } from './image/BulkImageCompressor';
+import { CompressImageTo100KB, CompressImageTo50KB, CompressImageTo200KB } from './image/CompressImageTo100KB';
+import { PassportPhotoMaker } from './image/PassportPhotoMaker';
 import { ImageResizer } from './image/ImageResizer';
 import { ImageCropper } from './image/ImageCropper';
 import { ImageFormatConverter } from './image/ImageFormatConverter';
@@ -14,6 +17,7 @@ import { ImageMetadataViewer } from './image/ImageMetadataViewer';
 
 // PDF Tools
 import { PdfCompressor } from './pdf/PdfCompressor';
+import { BulkPdfCompressor } from './pdf/BulkPdfCompressor';
 import { ImageToPdf } from './pdf/ImageToPdf';
 import { PdfMerger } from './pdf/PdfMerger';
 import { PdfSplitter } from './pdf/PdfSplitter';
@@ -174,6 +178,9 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
 
   switch (key) {
     // PDF Tools
+    case 'BulkPdfCompressor':
+    case 'bulk-pdf-compressor':
+      return <BulkPdfCompressor />;
     case 'PdfCompressor':
     case 'pdf-compressor':
       return <PdfCompressor />;
@@ -221,6 +228,21 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
       return <TextToPdf />;
 
     // Image Tools
+    case 'BulkImageCompressor':
+    case 'bulk-image-compressor':
+      return <BulkImageCompressor />;
+    case 'CompressImageTo100KB':
+    case 'compress-image-to-100kb':
+      return <CompressImageTo100KB />;
+    case 'CompressImageTo50KB':
+    case 'compress-image-to-50kb':
+      return <CompressImageTo50KB />;
+    case 'CompressImageTo200KB':
+    case 'compress-image-to-200kb':
+      return <CompressImageTo200KB />;
+    case 'PassportPhotoMaker':
+    case 'passport-photo-maker':
+      return <PassportPhotoMaker />;
     case 'ImageCompressor':
     case 'image-compressor':
       return <ImageCompressor />;
