@@ -74,7 +74,7 @@ export const AboutPage: React.FC = () => {
         <div>
           <h3 className="text-2xl font-bold">Ready to streamline your workflow?</h3>
           <p className="mt-1 text-teal-100 text-sm">
-            Explore our curated directory of 160+ web tools across 15 categories today.
+            Explore our curated directory of 255+ web tools across 15 categories today.
           </p>
         </div>
         <Link

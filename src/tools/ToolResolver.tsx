@@ -61,6 +61,10 @@ import { JavascriptMinifier } from './developer/JavascriptMinifier';
 // Calculators & Date/Time
 import { PercentageCalculator } from './calculators/PercentageCalculator';
 import { BasicCalculator } from './calculators/BasicCalculator';
+import { CgpaCalculator } from './education/CgpaCalculator';
+import { ScientificCalculator } from './education/ScientificCalculator';
+import { CitationGenerator } from './education/CitationGenerator';
+import { QuadraticEquationSolver } from './education/QuadraticEquationSolver';
 import { UnitConverter } from './calculators/UnitConverter';
 import { DiscountCalculator } from './calculators/DiscountCalculator';
 import { ProfitLossCalculator } from './calculators/ProfitLossCalculator';
@@ -343,6 +347,35 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
     case 'javascript-minifier':
       return <JavascriptMinifier />;
 
+    // Academic & Education Tools
+    case 'CgpaCalculator':
+    case 'cgpa-calculator':
+    case 'cgpa-cgpa-calculator':
+      return <CgpaCalculator initialTab="cgpa" />;
+    case 'gpa-calculator':
+    case 'sgpa-calculator':
+    case 'grade-calculator':
+      return <CgpaCalculator initialTab="sgpa" />;
+    case 'gpa-to-percentage-converter':
+      return <CgpaCalculator initialTab="percentage" />;
+    case 'attendance-calculator':
+      return <CgpaCalculator initialTab="attendance" />;
+    case 'final-grade-calculator':
+    case 'exam-score-calculator':
+      return <CgpaCalculator initialTab="exam" />;
+    case 'ScientificCalculator':
+    case 'scientific-calculator':
+      return <ScientificCalculator />;
+    case 'CitationGenerator':
+    case 'citation-generator':
+    case 'apa-citation-generator':
+    case 'mla-citation-generator':
+      return <CitationGenerator />;
+    case 'QuadraticEquationSolver':
+    case 'quadratic-equation-solver':
+    case 'equation-solver':
+      return <QuadraticEquationSolver />;
+
     // Calculators & Date/Time
     case 'PercentageCalculator':
     case 'percentage-calculator':
@@ -387,9 +420,37 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
     case 'DateFormatConverter':
     case 'date-format-converter':
       return <DateFormatConverter />;
+
+    // Education & Academic Tools
+    case 'CgpaCalculator':
+    case 'cgpa-calculator':
+      return <CgpaCalculator initialTab="cgpa" />;
+
+    case 'gpa-calculator':
+    case 'sgpa-calculator':
+      return <CgpaCalculator initialTab="sgpa" />;
+
+    case 'gpa-to-percentage-converter':
+      return <CgpaCalculator initialTab="percentage" />;
+
+    case 'attendance-calculator':
+      return <CgpaCalculator initialTab="attendance" />;
+
+    case 'exam-grade-calculator':
+      return <CgpaCalculator initialTab="exam" />;
+
     case 'ScientificCalculator':
     case 'scientific-calculator':
-      return <BasicCalculator />;
+      return <ScientificCalculator />;
+
+    case 'CitationGenerator':
+    case 'citation-generator':
+    case 'bibliography-generator':
+      return <CitationGenerator />;
+
+    case 'QuadraticEquationSolver':
+    case 'quadratic-equation-solver':
+      return <QuadraticEquationSolver />;
 
     // Color & Design
     case 'ColorPickerTool':
@@ -731,6 +792,9 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
       }
       if (tool.categorySlug === 'date-time-tools' || tool.category === 'Date & Time Tools') {
         return <CountdownCalculator />;
+      }
+      if (tool.categorySlug === 'education-tools' || tool.category === 'Education & Academic Tools') {
+        return <CgpaCalculator />;
       }
       if (tool.categorySlug === 'security-privacy' || tool.category === 'Security & Privacy') {
         return <PasswordGenerator />;

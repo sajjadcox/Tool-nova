@@ -30,7 +30,7 @@ export const NotFoundPage: React.FC = () => {
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold text-sm transition-colors"
         >
           <Search className="w-4 h-4" />
-          <span>Browse All 160+ Tools</span>
+          <span>Browse All 255+ Tools</span>
         </Link>
       </div>
 

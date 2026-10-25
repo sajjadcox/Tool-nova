@@ -16,7 +16,7 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChange,
-  placeholder = 'Search 160+ tools (e.g. compress image, pdf merge, word counter, json...)',
+  placeholder = 'Search 255+ tools (e.g. bulk image compress, pdf compress, youtube, cgpa, gpa, json...)',
   selectedCategory,
   onSelectCategory,
   categories = [],

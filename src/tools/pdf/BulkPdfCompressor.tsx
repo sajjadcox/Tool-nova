@@ -31,7 +31,7 @@ interface PdfItem {
 
 export const BulkPdfCompressor: React.FC = () => {
   const [items, setItems] = useState<PdfItem[]>([]);
-  const [mode, setMode] = useState<'extreme' | 'balanced' | 'light'>('extreme');
+  const [mode, setMode] = useState<'super' | 'extreme' | 'balanced' | 'light'>('super');
   const [removeMetadata, setRemoveMetadata] = useState<boolean>(true);
   const [flattenForms, setFlattenForms] = useState<boolean>(true);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
@@ -213,7 +213,20 @@ export const BulkPdfCompressor: React.FC = () => {
           <span className="text-xs text-slate-500">{items.length} PDFs in queue</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+          <button
+            type="button"
+            onClick={() => setMode('super')}
+            className={`p-3 rounded-xl border text-left transition-all ${
+              mode === 'super'
+                ? 'border-teal-500 bg-teal-50/50 dark:bg-teal-950/30 text-teal-700 dark:text-teal-300 ring-2 ring-teal-500/20'
+                : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300'
+            }`}
+          >
+            <p className="font-bold text-xs">Super Compaction (≥50%)</p>
+            <p className="text-[11px] text-slate-500">Downsamples graphics & scans</p>
+          </button>
+
           <button
             type="button"
             onClick={() => setMode('extreme')}
@@ -224,7 +237,7 @@ export const BulkPdfCompressor: React.FC = () => {
             }`}
           >
             <p className="font-bold text-xs">Extreme Compaction</p>
-            <p className="text-[11px] text-slate-500">Deep stream clustering & clean pass</p>
+            <p className="text-[11px] text-slate-500">Deep stream clustering</p>
           </button>
 
           <button

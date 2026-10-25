@@ -79,15 +79,16 @@ export const HomePage: React.FC = () => {
   ].filter(Boolean);
 
   const popularKeywords = [
+    'CGPA Calculator',
+    'Bulk PDF Compress',
     'YouTube Multi-Extractor',
-    'PDF Merger',
+    'PDF Compressor',
     'Image Compressor',
+    'Scientific Calculator',
     'YouTube Tags',
-    'YouTube Money Calculator',
     'Word Counter',
     'JSON Formatter',
-    'QR Code',
-    'Password Generator'
+    'QR Code'
   ];
 
   const faqs = [

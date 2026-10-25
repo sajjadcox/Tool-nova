@@ -65,6 +65,15 @@ export const CATEGORIES: CategoryDefinition[] = [
     gradient: 'from-amber-500 to-orange-600'
   },
   {
+    id: 'education-tools',
+    slug: 'education-tools',
+    name: 'Education & Academic Tools',
+    description: 'Calculate CGPA, SGPA, semester grades, attendance bunk margins, citations, and solve equations.',
+    icon: 'GraduationCap',
+    color: '#8b5cf6',
+    gradient: 'from-purple-600 to-indigo-600'
+  },
+  {
     id: 'color-design',
     slug: 'color-design',
     name: 'Color & Design Tools',
