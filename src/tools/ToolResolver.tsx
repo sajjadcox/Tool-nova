@@ -362,6 +362,7 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
       return <CgpaCalculator initialTab="attendance" />;
     case 'final-grade-calculator':
     case 'exam-score-calculator':
+    case 'exam-grade-calculator':
       return <CgpaCalculator initialTab="exam" />;
     case 'ScientificCalculator':
     case 'scientific-calculator':
@@ -370,6 +371,7 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
     case 'citation-generator':
     case 'apa-citation-generator':
     case 'mla-citation-generator':
+    case 'bibliography-generator':
       return <CitationGenerator />;
     case 'QuadraticEquationSolver':
     case 'quadratic-equation-solver':
@@ -420,37 +422,6 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
     case 'DateFormatConverter':
     case 'date-format-converter':
       return <DateFormatConverter />;
-
-    // Education & Academic Tools
-    case 'CgpaCalculator':
-    case 'cgpa-calculator':
-      return <CgpaCalculator initialTab="cgpa" />;
-
-    case 'gpa-calculator':
-    case 'sgpa-calculator':
-      return <CgpaCalculator initialTab="sgpa" />;
-
-    case 'gpa-to-percentage-converter':
-      return <CgpaCalculator initialTab="percentage" />;
-
-    case 'attendance-calculator':
-      return <CgpaCalculator initialTab="attendance" />;
-
-    case 'exam-grade-calculator':
-      return <CgpaCalculator initialTab="exam" />;
-
-    case 'ScientificCalculator':
-    case 'scientific-calculator':
-      return <ScientificCalculator />;
-
-    case 'CitationGenerator':
-    case 'citation-generator':
-    case 'bibliography-generator':
-      return <CitationGenerator />;
-
-    case 'QuadraticEquationSolver':
-    case 'quadratic-equation-solver':
-      return <QuadraticEquationSolver />;
 
     // Color & Design
     case 'ColorPickerTool':

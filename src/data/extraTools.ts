@@ -944,23 +944,6 @@ export const EXTRA_TOOLS: ToolDefinition[] = [
     componentKey: 'TotpCodeGenerator'
   },
   {
-    id: 'gpa-to-percentage-converter',
-    slug: 'gpa-to-percentage-converter',
-    name: 'GPA to Percentage & Grade Converter',
-    category: 'Calculators',
-    categorySlug: 'calculators',
-    description: 'Convert 4.0 or 5.0 scale GPA and CGPA into academic marks percentage and letter grades.',
-    keywords: ['gpa to percentage', 'convert gpa to percent', 'cgpa to percentage calculator', 'college grade converter'],
-    icon: 'GraduationCap',
-    route: '/tools/gpa-to-percentage-converter',
-    status: 'Tested',
-    processingMode: 'client',
-    privacyInfo: 'Browser math execution.',
-    relatedToolIds: ['percentage-calculator', 'basic-calculator'],
-    popular: true,
-    componentKey: 'PercentageCalculator'
-  },
-  {
     id: 'age-in-days-hours-seconds',
     slug: 'age-in-days-hours-seconds',
     name: 'Age in Days, Hours & Minutes Calculator',

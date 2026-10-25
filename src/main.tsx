@@ -1,3 +1,4 @@
+import './utils/polyfills';
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
@@ -102,6 +103,7 @@ class RootErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
+  (window as unknown as { __TOOLNOVA_MOUNTED__?: boolean }).__TOOLNOVA_MOUNTED__ = true;
   createRoot(rootElement).render(
     <RootErrorBoundary>
       <App />
