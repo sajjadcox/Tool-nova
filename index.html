@@ -56,6 +56,16 @@
     }
     </script>
     <script>
+      // 0. Ensure trailing slash on GitHub Pages subdirectory URLs (prevents relative assets 404)
+      try {
+        if (location.hostname.endsWith('github.io')) {
+          var p = location.pathname;
+          if (p.length > 1 && !p.endsWith('/') && p.split('/').pop().indexOf('.') === -1) {
+            location.replace(location.origin + p + '/' + location.search + location.hash);
+          }
+        }
+      } catch (e) {}
+
       // 1. Critical modern JavaScript polyfills for broad browser compatibility
       if (typeof Promise.withResolvers === 'undefined') {
         Promise.withResolvers = function () {

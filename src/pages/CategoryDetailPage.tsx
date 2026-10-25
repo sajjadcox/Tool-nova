@@ -5,8 +5,9 @@ import { TOOLS_REGISTRY } from '../data/tools';
 import { ToolCard } from '../components/cards/ToolCard';
 import { Breadcrumbs } from '../components/common/Breadcrumbs';
 import { IconResolver } from '../components/common/IconResolver';
-import { useFavorites } from '../hooks/useFavorites';
 import { EmptyState } from '../components/common/EmptyState';
+import { useFavorites } from '../hooks/useFavorites';
+import { useSEO } from '../hooks/useSEO';
 
 export const CategoryDetailPage: React.FC = () => {
   const { categorySlug } = useParams<{ categorySlug: string }>();
@@ -14,6 +15,12 @@ export const CategoryDetailPage: React.FC = () => {
 
   const category = CATEGORIES.find(c => c.slug === categorySlug);
   const tools = TOOLS_REGISTRY.filter(t => t.categorySlug === categorySlug);
+
+  useSEO({
+    categoryName: category?.name,
+    description: category?.description ? `Free online ${category.name} tools. ${category.description} 100% private in-browser processing.` : undefined,
+    canonicalPath: `#/categories/${categorySlug}`
+  });
 
   if (!category) {
     return (

@@ -27,13 +27,22 @@ import { TOOLS_REGISTRY } from '../data/tools';
 import { CATEGORIES } from '../data/categories';
 import { SearchBar } from '../components/search/SearchBar';
 import { ToolCard } from '../components/cards/ToolCard';
+import { CategoryCard } from '../components/cards/CategoryCard';
 import { useFavorites } from '../hooks/useFavorites';
+import { useSEO } from '../hooks/useSEO';
 
 export const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const { isFavorite, toggleFavorite } = useFavorites();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Full SEO Optimization
+  useSEO({
+    title: 'ToolNova – 255+ Free Online Web Tools | Fast & 100% Private',
+    description: 'Discover 255+ powerful, free web tools for images, audio, video, PDFs, SEO, coding, and productivity with 100% private in-browser processing.',
+    canonicalPath: '#/'
+  });
 
   const searchResultsRef = useRef<HTMLDivElement | null>(null);
 
@@ -274,11 +283,36 @@ export const HomePage: React.FC = () => {
             </div>
           </section>
 
-          {/* All Tools Categorized Directly on Homepage */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14">
-            {CATEGORIES.map(category => {
+          {/* Essential Categories Grid */}
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold text-xs uppercase tracking-wider">
+                <Layers className="w-4 h-4" />
+                <span>Explore Top Categories</span>
+              </div>
+              <Link
+                to="/categories"
+                className="text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1"
+              >
+                <span>View all categories</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {CATEGORIES.map(cat => {
+                const count = TOOLS_REGISTRY.filter(t => t.categorySlug === cat.slug).length;
+                return <CategoryCard key={cat.id} category={cat} toolCount={count} />;
+              })}
+            </div>
+          </section>
+
+          {/* Top Essential Tools by Key Category */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+            {CATEGORIES.slice(0, 5).map(category => {
               const toolsInCat = TOOLS_REGISTRY.filter(t => t.categorySlug === category.slug);
               if (toolsInCat.length === 0) return null;
+              const topTools = toolsInCat.slice(0, 4);
 
               return (
                 <section
@@ -313,13 +347,13 @@ export const HomePage: React.FC = () => {
                       to={`/categories/${category.slug}`}
                       className="text-xs font-semibold text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 self-start sm:self-auto"
                     >
-                      <span>Explore category</span>
+                      <span>Explore all {toolsInCat.length} {category.name} tools</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-                    {toolsInCat.map(tool => (
+                    {topTools.map(tool => (
                       <ToolCard
                         key={tool.id}
                         tool={tool}
@@ -332,6 +366,34 @@ export const HomePage: React.FC = () => {
               );
             })}
           </div>
+
+          {/* Directory CTA: Explore Full 255+ Tools Catalog */}
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-teal-500/10 via-indigo-500/10 to-teal-500/10 border border-teal-500/20 text-center space-y-4">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">
+                Looking for More Tools?
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
+                Explore our complete library of over 255+ privacy-first web utilities across 11 diverse categories with instant search.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <Link
+                  to="/tools"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-sm shadow-sm transition-all"
+                >
+                  <Grid className="w-4 h-4" />
+                  <span>Browse All 255+ Tools</span>
+                </Link>
+                <Link
+                  to="/categories"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-semibold text-sm border border-slate-200 dark:border-slate-700 transition-all"
+                >
+                  <Layers className="w-4 h-4" />
+                  <span>All Categories</span>
+                </Link>
+              </div>
+            </div>
+          </section>
         </div>
       )}
 

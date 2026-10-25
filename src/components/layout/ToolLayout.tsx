@@ -22,6 +22,8 @@ import { useFavorites } from '../../hooks/useFavorites';
 import { useRecentTools } from '../../hooks/useRecentTools';
 import { ShareResultButton } from '../common/ShareResultButton';
 
+import { useSEO } from '../../hooks/useSEO';
+
 interface ToolLayoutProps {
   tool: ToolDefinition;
   children: React.ReactNode;
@@ -38,14 +40,15 @@ export const ToolLayout: React.FC<ToolLayoutProps> = ({
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addRecentTool } = useRecentTools();
 
+  // Full SEO Optimization (Page Title, Meta Description, OpenGraph, Canonical, Schema.org JSON-LD)
+  useSEO({ tool });
+
   useEffect(() => {
     // Record as recently used
     addRecentTool(tool.id);
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'instant' });
-    // Update document title for SEO
-    document.title = `${tool.name} – Free Online Tool | ToolNova Tool Kit`;
-  }, [tool.id, tool.name]);
+  }, [tool.id]);
 
   const relatedTools = (tool.relatedToolIds || [])
     .map(id => TOOLS_REGISTRY.find(t => t.id === id))

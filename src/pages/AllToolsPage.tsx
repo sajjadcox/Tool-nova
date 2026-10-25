@@ -6,11 +6,18 @@ import { SearchBar } from '../components/search/SearchBar';
 import { Breadcrumbs } from '../components/common/Breadcrumbs';
 import { EmptyState } from '../components/common/EmptyState';
 import { useFavorites } from '../hooks/useFavorites';
+import { useSEO } from '../hooks/useSEO';
 
 export const AllToolsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const { isFavorite, toggleFavorite } = useFavorites();
+
+  useSEO({
+    title: 'All Online Tools Directory (255+ Free Web Tools)',
+    description: 'Explore the complete directory of 255+ free web tools for PDF, images, video, audio, SEO, programming, calculators, and social media.',
+    canonicalPath: '#/tools'
+  });
 
   const filteredTools = TOOLS_REGISTRY.filter(tool => {
     const matchesSearch = !searchQuery.trim() ||
