@@ -148,21 +148,21 @@ export const EXTRA_TOOLS: ToolDefinition[] = [
     componentKey: 'XmlSitemapGenerator'
   },
   {
-    id: 'robots-txt-generator',
-    slug: 'robots-txt-generator',
-    name: 'Robots.txt Generator',
+    id: 'meta-description-generator',
+    slug: 'meta-description-generator',
+    name: 'SEO Meta Description Generator',
     category: 'SEO Tools',
     categorySlug: 'seo-tools',
-    description: 'Create customized robots.txt files with crawler permissions for Googlebot, Bingbot, Baidu, and AI scrapers.',
-    keywords: ['robots txt generator', 'create robots txt', 'googlebot disallow', 'bingbot robots txt', 'sitemap robots txt'],
-    icon: 'Bot',
-    route: '/tools/robots-txt-generator',
+    description: 'Generate CTR-optimized meta descriptions with emojis, keyword placement, and ideal character lengths for Google search.',
+    keywords: ['meta description generator', 'create meta description', 'seo description maker', 'serp description generator'],
+    icon: 'FileText',
+    route: '/tools/meta-description-generator',
     status: 'Tested',
     processingMode: 'client',
-    privacyInfo: 'Client-side generation.',
-    relatedToolIds: ['xml-sitemap-generator', 'google-serp-simulator', 'meta-tag-analyzer'],
+    privacyInfo: 'Generated in browser.',
+    relatedToolIds: ['meta-tag-generator', 'google-serp-simulator', 'slug-generator'],
     popular: true,
-    componentKey: 'RobotsTxtGenerator'
+    componentKey: 'MetaTagGenerator'
   },
   {
     id: 'favicon-generator',
