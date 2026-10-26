@@ -101,6 +101,14 @@ class RootErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState
   }
 }
 
+try {
+  const hash = window.location.hash;
+  if (!hash || hash === '#' || hash === '#/' || (!sessionStorage.getItem('toolnova_session_active') && hash === '#/tools')) {
+    window.location.hash = '#/';
+  }
+  sessionStorage.setItem('toolnova_session_active', 'true');
+} catch (e) {}
+
 const rootElement = document.getElementById('root');
 if (rootElement) {
   (window as unknown as { __TOOLNOVA_MOUNTED__?: boolean }).__TOOLNOVA_MOUNTED__ = true;
