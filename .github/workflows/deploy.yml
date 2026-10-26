@@ -36,10 +36,13 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Setup GitHub Pages
+        id: pages
         uses: actions/configure-pages@v4
 
       - name: Build production bundle
         run: npm run build
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
       - name: Upload dist artifact
         uses: actions/upload-pages-artifact@v3

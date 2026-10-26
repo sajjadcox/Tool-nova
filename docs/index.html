@@ -1,22 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script>
-      // Dynamically inject <base> tag to guarantee relative assets (./assets/...) resolve properly across GitHub Pages, Netlify, and root domains
-      (function() {
-        var p = window.location.pathname;
-        var baseDir;
-        if (window.location.hostname.endsWith('github.io')) {
-          var segs = p.split('/').filter(Boolean);
-          baseDir = segs.length > 0 ? '/' + segs[0] + '/' : '/';
-        } else {
-          baseDir = '/';
-        }
-        var b = document.createElement('base');
-        b.href = baseDir;
-        document.head.insertBefore(b, document.head.firstChild);
-      })();
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToolNova - Every Tool You Need. All in One Place.</title>
