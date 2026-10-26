@@ -52,6 +52,8 @@ export default function App() {
           <Suspense fallback={<RouteLoadingFallback />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/index.html" element={<HomePage />} />
               <Route path="/tools" element={<AllToolsPage />} />
               <Route path="/categories" element={<CategoriesPage />} />
               <Route path="/categories/:categorySlug" element={<CategoryDetailPage />} />

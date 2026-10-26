@@ -13,7 +13,8 @@ import {
   Search,
   Sparkles,
   HelpCircle,
-  Mail
+  Mail,
+  Home
 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useFavorites } from '../../hooks/useFavorites';
@@ -25,12 +26,12 @@ export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
-    if (path === '/' && location.pathname === '/') return true;
-    if (path !== '/' && location.pathname.startsWith(path)) return true;
-    return false;
+    if (path === '/') return location.pathname === '/' || location.pathname === '';
+    return location.pathname.startsWith(path);
   };
 
   const navLinks = [
+    { label: 'Home', path: '/', icon: Home },
     { label: 'All Tools', path: '/tools', icon: Grid },
     { label: 'Categories', path: '/categories', icon: Layers },
     { label: 'Popular', path: '/popular', icon: Flame },

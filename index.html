@@ -1,6 +1,22 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      // Dynamically inject <base> tag to guarantee relative assets (./assets/...) resolve properly across GitHub Pages, Netlify, and root domains
+      (function() {
+        var p = window.location.pathname;
+        var baseDir;
+        if (window.location.hostname.endsWith('github.io')) {
+          var segs = p.split('/').filter(Boolean);
+          baseDir = segs.length > 0 ? '/' + segs[0] + '/' : '/';
+        } else {
+          baseDir = '/';
+        }
+        var b = document.createElement('base');
+        b.href = baseDir;
+        document.head.insertBefore(b, document.head.firstChild);
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToolNova - Every Tool You Need. All in One Place.</title>
@@ -127,6 +143,20 @@
         <h2 style="font-size: 20px; font-weight: 800; color: #14b8a6; margin: 0 0 4px 0; letter-spacing: -0.5px;">ToolNova</h2>
         <p style="color: #94a3b8; font-size: 13px; margin: 0;">Loading tools suite...</p>
       </div>
+      <script>
+        setTimeout(function() {
+          if (!window.__TOOLNOVA_MOUNTED__) {
+            var el = document.getElementById('loading-fallback');
+            if (el) {
+              el.innerHTML = '<div style="background:#131C31;border:1px solid #1E293B;border-radius:16px;padding:32px;max-width:440px;color:#F8FAFC;font-family:sans-serif;text-align:center;">' +
+                '<h2 style="font-size:20px;font-weight:700;color:#14B8A6;margin:0 0 8px 0;">ToolNova</h2>' +
+                '<p style="color:#94A3B8;font-size:14px;margin:0 0 20px 0;">Connection delayed or loading stalled.</p>' +
+                '<button onclick="location.hash=\'#/\';location.reload();" style="background:#14B8A6;color:#ffffff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Enter Homepage</button>' +
+                '</div>';
+            }
+          }
+        }, 3500);
+      </script>
       <style>
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
       </style>

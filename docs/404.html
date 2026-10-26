@@ -23,7 +23,11 @@
 
         // On Netlify, custom domains, or root deployments
         var cleanPath = path.replace(/^\//, '');
-        window.location.replace('/#/' + cleanPath + search + hash);
+        if (!cleanPath || cleanPath === 'index.html' || cleanPath === '404.html') {
+          window.location.replace('/#/' + search + hash);
+        } else {
+          window.location.replace('/#/' + cleanPath + search + hash);
+        }
       })();
     </script>
   </head>

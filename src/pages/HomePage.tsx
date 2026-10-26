@@ -179,8 +179,8 @@ export const HomePage: React.FC = () => {
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
-            <Grid className="w-3.5 h-3.5" />
-            <span>All Tools ({TOOLS_REGISTRY.length})</span>
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Featured & Essential</span>
           </button>
 
           {CATEGORIES.map(cat => {
