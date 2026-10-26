@@ -3,34 +3,23 @@
   <head>
     <script>
       (function() {
-        var isDev = location.hostname === 'localhost' || 
-                    location.hostname === '127.0.0.1' || 
-                    location.hostname.includes('.run.app') || 
-                    location.port === '3000';
-
-        if (!isDev || location.hostname.endsWith('github.io')) {
-          window.__IS_PRODUCTION_HOST__ = true;
-
-          // 0. Ensure trailing slash on GitHub Pages subdirectory URLs (prevents relative assets 404)
-          try {
+        try {
+          if (location.hostname.endsWith('github.io')) {
             var p = location.pathname;
+            // If served from root folder on GitHub Pages, redirect into /docs/ where the compiled site is!
+            if (!p.includes('/docs')) {
+              var segments = p.split('/').filter(Boolean);
+              var repo = segments.length > 0 ? '/' + segments[0] : '';
+              location.replace(location.origin + repo + '/docs/' + location.search + location.hash);
+              return;
+            }
+            // Ensure trailing slash on subdirectory
             if (p.length > 1 && !p.endsWith('/') && p.split('/').pop().indexOf('.') === -1) {
               location.replace(location.origin + p + '/' + location.search + location.hash);
               return;
             }
-          } catch (e) {}
-
-          // Load compiled production entrypoint
-          var path = location.pathname;
-          var dir = path.substring(0, path.lastIndexOf('/') + 1) || '/';
-          if (!dir.endsWith('/')) dir += '/';
-
-          var s = document.createElement('script');
-          s.type = 'module';
-          s.crossOrigin = '';
-          s.src = dir + 'assets/app-entry.js';
-          document.head.appendChild(s);
-        }
+          }
+        } catch (e) {}
       })();
     </script>
     <meta charset="UTF-8" />
@@ -172,7 +161,7 @@
         // Smart dynamic asset loader fallback at 1.2s:
         setTimeout(function() {
           if (!window.__TOOLNOVA_MOUNTED__) {
-            var scripts = document.querySelectorAll('script[src*="index-"]');
+            var scripts = document.querySelectorAll('script[src*="index"]');
             if (scripts.length > 0) {
               var sSrc = scripts[0].getAttribute('src');
               var p = window.location.pathname;
@@ -201,10 +190,6 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
       </style>
     </div>
-    <script type="module">
-      if (!window.__IS_PRODUCTION_HOST__) {
-        import('/src/main.tsx');
-      }
-    </script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
