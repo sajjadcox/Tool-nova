@@ -13,11 +13,11 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category, toolCount 
   return (
     <Link
       to={`/categories/${category.slug}`}
-      className="group relative p-6 rounded-2xl bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800/80 hover:border-teal-500/50 dark:hover:border-teal-400/50 shadow-xs hover:shadow-lg transition-all duration-200 flex flex-col justify-between"
+      className="group relative p-6 rounded-2xl bg-white dark:bg-[#131C31] border border-slate-200 dark:border-slate-800/80 hover:border-teal-500/60 dark:hover:border-teal-400/60 shadow-xs hover:shadow-xl hover:-translate-y-1 active:scale-[0.99] transition-all duration-200 cursor-pointer flex flex-col justify-between"
     >
       <div>
         <div className="flex items-center justify-between mb-4">
-          <div className="w-12 h-12 rounded-2xl bg-teal-50 dark:bg-teal-950/60 border border-teal-200/80 dark:border-teal-800/60 flex items-center justify-center text-teal-600 dark:text-teal-400 group-hover:bg-teal-600 group-hover:text-white transition-all duration-200">
+          <div className="w-12 h-12 rounded-2xl bg-teal-50 dark:bg-teal-950/60 border border-teal-200/80 dark:border-teal-800/60 flex items-center justify-center text-teal-600 dark:text-teal-400 group-hover:bg-teal-600 group-hover:text-white group-hover:scale-105 transition-all duration-200">
             <IconResolver name={category.icon} className="w-6 h-6" />
           </div>
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">

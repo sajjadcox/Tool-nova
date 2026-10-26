@@ -63,6 +63,9 @@ export const HomePage: React.FC = () => {
   const handleKeywordClick = (kw: string) => {
     setSearchQuery(kw);
     setSelectedCategory('all');
+    setTimeout(() => {
+      searchResultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
   };
 
   const handleCategoryPillClick = (catId: string) => {

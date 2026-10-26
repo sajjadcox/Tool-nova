@@ -18,7 +18,10 @@ export const ToolCard: React.FC<ToolCardProps> = ({
   compact = false
 }) => {
   return (
-    <div className="group relative bg-white dark:bg-[#131C31] rounded-xl sm:rounded-2xl border border-slate-200/90 dark:border-slate-800/80 hover:border-teal-500/50 dark:hover:border-teal-400/40 p-3.5 sm:p-4 shadow-2xs hover:shadow-md transition-all duration-150 flex flex-col justify-between">
+    <Link
+      to={tool.route}
+      className="group relative block bg-white dark:bg-[#131C31] rounded-xl sm:rounded-2xl border border-slate-200/90 dark:border-slate-800/80 hover:border-teal-500/60 dark:hover:border-teal-400/60 p-3.5 sm:p-4 shadow-2xs hover:shadow-lg hover:-translate-y-1 active:scale-[0.99] transition-all duration-200 cursor-pointer flex flex-col justify-between"
+    >
       <div>
         {/* Top category & favorite row */}
         <div className="flex items-center justify-between gap-1 mb-2">
@@ -38,7 +41,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({
                   e.stopPropagation();
                   onToggleFavorite(tool.id);
                 }}
-                className={`p-1 rounded-md transition-colors ${
+                className={`p-1 rounded-md transition-colors z-10 ${
                   isFavorite
                     ? 'text-rose-500 bg-rose-50 dark:bg-rose-950/40'
                     : 'text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -54,19 +57,16 @@ export const ToolCard: React.FC<ToolCardProps> = ({
 
         {/* Tool Icon & Name */}
         <div className="flex items-start gap-2.5 sm:gap-3 mb-2">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-teal-50 dark:bg-teal-950/50 border border-teal-100 dark:border-teal-800/60 flex items-center justify-center text-teal-600 dark:text-teal-400 shrink-0 group-hover:bg-teal-600 group-hover:text-white transition-all">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-teal-50 dark:bg-teal-950/50 border border-teal-100 dark:border-teal-800/60 flex items-center justify-center text-teal-600 dark:text-teal-400 shrink-0 group-hover:bg-teal-600 group-hover:text-white group-hover:scale-105 transition-all">
             <IconResolver name={tool.icon} className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
           </div>
           <div className="min-w-0">
-            <Link
-              to={tool.route}
-              className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors text-xs sm:text-sm flex items-center gap-1 leading-snug"
-            >
+            <h3 className="font-bold text-slate-900 dark:text-slate-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors text-xs sm:text-sm flex items-center gap-1 leading-snug">
               <span className="truncate">{tool.name}</span>
               {tool.featured && (
                 <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
               )}
-            </Link>
+            </h3>
           </div>
         </div>
 
@@ -85,14 +85,11 @@ export const ToolCard: React.FC<ToolCardProps> = ({
           <span>Local</span>
         </div>
 
-        <Link
-          to={tool.route}
-          className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors"
-        >
-          <span>Use Tool</span>
-          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-        </Link>
+        <div className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-slate-700 dark:text-slate-300 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+          <span>Open Tool</span>
+          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
