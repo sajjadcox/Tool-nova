@@ -1,6 +1,20 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      // 0. Ensure trailing slash on GitHub Pages subdirectory URLs IMMEDIATELY (prevents relative assets 404)
+      (function() {
+        try {
+          if (location.hostname.endsWith('github.io')) {
+            var p = location.pathname;
+            if (p.length > 1 && !p.endsWith('/') && p.split('/').pop().indexOf('.') === -1) {
+              location.replace(location.origin + p + '/' + location.search + location.hash);
+              return;
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToolNova - Every Tool You Need. All in One Place.</title>
@@ -56,16 +70,6 @@
     }
     </script>
     <script>
-      // 0. Ensure trailing slash on GitHub Pages subdirectory URLs (prevents relative assets 404)
-      try {
-        if (location.hostname.endsWith('github.io')) {
-          var p = location.pathname;
-          if (p.length > 1 && !p.endsWith('/') && p.split('/').pop().indexOf('.') === -1) {
-            location.replace(location.origin + p + '/' + location.search + location.hash);
-          }
-        }
-      } catch (e) {}
-
       // 1. Critical modern JavaScript polyfills for broad browser compatibility
       if (typeof Promise.withResolvers === 'undefined') {
         Promise.withResolvers = function () {
@@ -106,22 +110,35 @@
       } catch (e) {}
 
       // 3. Catch startup errors and show actionable recovery
-      window.addEventListener('error', function (event) {
+      function showStartupError(msg) {
         var el = document.getElementById('loading-fallback');
         if (el && !window.__TOOLNOVA_MOUNTED__) {
-          var msg = event.message || (event.error && event.error.message) || 'Error initializing application scripts';
           el.innerHTML = '<div style="background:#131c31;border:1px solid #1e293b;border-radius:12px;padding:24px;max-width:440px;color:#f8fafc;font-family:sans-serif;text-align:center;">' +
             '<div style="font-size:28px;margin-bottom:12px;">⚠️</div>' +
             '<h3 style="font-size:16px;font-weight:700;margin:0 0 8px;color:#f1f5f9;">App initialization failed</h3>' +
             '<p style="font-size:13px;color:#94a3b8;margin:0 0 16px;word-break:break-word;">' + msg + '</p>' +
-            '<button onclick="location.reload()" style="background:#14b8a6;color:#ffffff;border:none;padding:8px 20px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;">Refresh Page</button>' +
+            '<button onclick="window.handleEnterHome ? window.handleEnterHome() : location.reload()" style="background:#14b8a6;color:#ffffff;border:none;padding:8px 20px;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;">Enter Home</button>' +
             '</div>';
+        }
+      }
+
+      window.addEventListener('error', function (event) {
+        if (!window.__TOOLNOVA_MOUNTED__) {
+          var target = event.target;
+          var msg = (target && target.src) ? ('Failed to load asset: ' + target.src) : (event.message || 'Script error');
+          showStartupError(msg);
+        }
+      }, true);
+
+      window.addEventListener('unhandledrejection', function (event) {
+        if (!window.__TOOLNOVA_MOUNTED__) {
+          showStartupError(event.reason ? (event.reason.message || String(event.reason)) : 'Async script rejected');
         }
       });
     </script>
-    <script type="module" crossorigin src="./assets/index-LZoKeByO.js"></script>
+    <script type="module" crossorigin src="./assets/index-BvfJUR0Z.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/jsx-dev-runtime-BAGzDL_H.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-vwcR5re7.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-DMVXb6ry.css">
   </head>
   <body class="bg-slate-50 text-slate-900 dark:bg-[#0B1220] dark:text-slate-100 antialiased selection:bg-teal-500 selection:text-white">
     <div id="root">
@@ -131,6 +148,27 @@
         <p style="color: #94a3b8; font-size: 13px; margin: 0;">Loading tools suite...</p>
       </div>
       <script>
+        window.handleEnterHome = function() {
+          var p = window.location.pathname;
+          var baseDir = p.endsWith('/') ? p : (p.split('/').pop().indexOf('.') === -1 ? p + '/' : p.substring(0, p.lastIndexOf('/') + 1));
+          window.location.replace(window.location.origin + baseDir + '#/');
+        };
+
+        // Smart dynamic asset loader fallback at 1.2s:
+        setTimeout(function() {
+          if (!window.__TOOLNOVA_MOUNTED__) {
+            var scripts = document.querySelectorAll('script[src*="index-"]');
+            if (scripts.length > 0) {
+              var sSrc = scripts[0].getAttribute('src');
+              var p = window.location.pathname;
+              var dir = p.substring(0, p.lastIndexOf('/') + 1) || '/';
+              var clean = sSrc.replace(/^\.\//, '');
+              var abs = window.location.origin + dir + clean;
+              import(abs).catch(function(e) {});
+            }
+          }
+        }, 1200);
+
         setTimeout(function() {
           if (!window.__TOOLNOVA_MOUNTED__) {
             var el = document.getElementById('loading-fallback');
@@ -138,11 +176,11 @@
               el.innerHTML = '<div style="background:#131C31;border:1px solid #1E293B;border-radius:16px;padding:32px;max-width:440px;color:#F8FAFC;font-family:sans-serif;text-align:center;">' +
                 '<h2 style="font-size:20px;font-weight:700;color:#14B8A6;margin:0 0 8px 0;">ToolNova</h2>' +
                 '<p style="color:#94A3B8;font-size:14px;margin:0 0 20px 0;">Connection delayed or loading stalled.</p>' +
-                '<button onclick="location.hash=\'#/\';location.reload();" style="background:#14B8A6;color:#ffffff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Enter Homepage</button>' +
+                '<button onclick="window.handleEnterHome()" style="background:#14B8A6;color:#ffffff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Enter Homepage</button>' +
                 '</div>';
             }
           }
-        }, 3500);
+        }, 4000);
       </script>
       <style>@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
     </div>
