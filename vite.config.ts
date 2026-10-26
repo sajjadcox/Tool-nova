@@ -21,6 +21,15 @@ export default defineConfig(({ command }) => {
   return {
     base,
     plugins: [react(), tailwindcss()],
+    build: {
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/app-entry.js',
+          assetFileNames: 'assets/[name]-[hash].[ext]',
+          chunkFileNames: 'assets/[name]-[hash].js'
+        }
+      }
+    },
     resolve: {
       alias: {
         '@': path.resolve(import.meta.dirname, '.'),

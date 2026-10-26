@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { useFavorites } from '../../hooks/useFavorites';
+import { TOOLS_REGISTRY } from '../../data/tools';
 
 export const Header: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -32,7 +33,7 @@ export const Header: React.FC = () => {
 
   const navLinks = [
     { label: 'Home', path: '/', icon: Home },
-    { label: 'All Tools', path: '/tools', icon: Grid },
+    { label: 'All Tools', path: '/tools', icon: Grid, badge: TOOLS_REGISTRY.length },
     { label: 'Categories', path: '/categories', icon: Layers },
     { label: 'Popular', path: '/popular', icon: Flame },
     { label: 'Favorites', path: '/favorites', icon: Heart, badge: favorites.length > 0 ? favorites.length : undefined },

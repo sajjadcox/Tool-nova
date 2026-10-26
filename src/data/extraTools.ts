@@ -7,10 +7,10 @@ export const EXTRA_TOOLS: ToolDefinition[] = [
   {
     id: 'bulk-image-compressor',
     slug: 'bulk-image-compressor',
-    name: 'Bulk Image Compressor (1,000+ Files)',
+    name: 'Unlimited Bulk Image Compressor (Unlimited Files)',
     category: 'Image Tools',
     categorySlug: 'image-tools',
-    description: 'Compress hundreds or thousands of JPG, PNG, and WebP images at once with ZIP download and target KB limits.',
+    description: 'Compress unlimited images (500, 1,000, 5,000+ files) simultaneously with 100% private in-browser batch processing, target KB controls, and one-click ZIP download.',
     keywords: ['bulk image compressor', 'compress 1000 images', 'batch image compress', 'bulk compress jpg', 'zip download'],
     icon: 'Layers',
     route: '/tools/bulk-image-compressor',

@@ -113,6 +113,7 @@ export const BulkImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ in
             // Update item to processing
             setItems(prev => prev.map(it => it.id === item.id ? { ...it, status: 'processing' } : it));
             const result = await compressSingleImage(file, options);
+            const objectUrl = URL.createObjectURL(result.blob);
 
             setItems(prev => prev.map(it => {
               if (it.id === item.id) {
@@ -122,7 +123,7 @@ export const BulkImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ in
                   compressedSize: result.compressedSize,
                   percentSaved: result.percentSaved,
                   blob: result.blob,
-                  previewUrl: result.dataUrl
+                  previewUrl: objectUrl
                 };
               }
               return it;
@@ -219,13 +220,13 @@ export const BulkImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ in
           <div className="space-y-1">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 text-xs font-bold">
               <Zap className="w-3.5 h-3.5 fill-current" />
-              <span>Unlimited Batch Processor • Up to 1,000+ Images</span>
+              <span>100% Unlimited Batch Processor • No File Limits</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
-              Bulk Image Compressor & Optimizer
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:white">
+              Unlimited Bulk Image Compressor & Optimizer
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-              Compress hundreds or thousands of JPG, PNG, and WebP images simultaneously in your browser. Zero server uploads, maximum privacy, instant ZIP download.
+              Compress 500, 1,000, 5,000+ JPG, PNG, and WebP images simultaneously without any limit on count or size. Zero server uploads, instant in-browser compression, and one-click ZIP download.
             </p>
           </div>
 
@@ -437,7 +438,7 @@ export const BulkImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ in
             Click or Drag & Drop Multiple Images Here
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Supports 1 to 1,000+ files (JPG, PNG, WebP, BMP, GIF). Unlimited total file size. Processed 100% locally on your device.
+            Supports unlimited files (500, 1,000, 5,000+ images: JPG, PNG, WebP, BMP, GIF). No file count limit. Processed 100% locally on your device.
           </p>
         </div>
       </div>
