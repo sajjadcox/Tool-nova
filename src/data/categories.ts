@@ -2,6 +2,15 @@ import { CategoryDefinition } from '../types';
 
 export const CATEGORIES: CategoryDefinition[] = [
   {
+    id: 'compressor-tools',
+    slug: 'compressor-tools',
+    name: 'Compressor Tools',
+    description: 'High-performance 80%-90% file size reduction for videos, images, audio, PDFs, code, text, and archives. 100% private in-browser compression.',
+    icon: 'Minimize2',
+    color: '#0d9488',
+    gradient: 'from-teal-500 to-emerald-600'
+  },
+  {
     id: 'youtube-tools',
     slug: 'youtube-tools',
     name: 'YouTube Tools',

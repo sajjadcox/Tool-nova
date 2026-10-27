@@ -27,12 +27,12 @@ import {
 export const ImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ initialTargetKB }) => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [quality, setQuality] = useState<number>(0.75);
+  const [quality, setQuality] = useState<number>(0.45);
   const [format, setFormat] = useState<'auto' | 'image/jpeg' | 'image/webp' | 'image/png'>('image/webp');
-  const [maxDimension, setMaxDimension] = useState<number>(1920);
+  const [maxDimension, setMaxDimension] = useState<number>(1280);
   const [targetSizeKB, setTargetSizeKB] = useState<number>(initialTargetKB || 0);
   const [mode, setMode] = useState<'balanced' | 'extreme' | 'target' | 'custom'>(
-    initialTargetKB ? 'target' : 'balanced'
+    initialTargetKB ? 'target' : 'extreme'
   );
 
   const [compressedResult, setCompressedResult] = useState<CompressionResult | null>(null);
@@ -93,7 +93,7 @@ export const ImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ initia
       newDim = 1920;
       newFmt = 'image/webp';
     } else if (newMode === 'extreme') {
-      newQ = 0.5;
+      newQ = 0.45;
       newDim = 1280;
       newFmt = 'image/webp';
     } else if (newMode === 'target') {

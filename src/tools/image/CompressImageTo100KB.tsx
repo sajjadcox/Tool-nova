@@ -12,3 +12,8 @@ export const CompressImageTo50KB: React.FC = () => {
 export const CompressImageTo200KB: React.FC = () => {
   return <BulkImageCompressor initialTargetKB={200} />;
 };
+
+export const CompressImageTo20KB: React.FC = () => {
+  return <BulkImageCompressor initialTargetKB={20} />;
+};
+

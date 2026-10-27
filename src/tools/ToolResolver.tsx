@@ -4,7 +4,8 @@ import { ToolDefinition } from '../types';
 // Image Tools
 import { ImageCompressor } from './image/ImageCompressor';
 import { BulkImageCompressor } from './image/BulkImageCompressor';
-import { CompressImageTo100KB, CompressImageTo50KB, CompressImageTo200KB } from './image/CompressImageTo100KB';
+import { CompressImageTo100KB, CompressImageTo50KB, CompressImageTo200KB, CompressImageTo20KB } from './image/CompressImageTo100KB';
+import { GifCompressor } from './image/GifCompressor';
 import { PassportPhotoMaker } from './image/PassportPhotoMaker';
 import { ImageResizer } from './image/ImageResizer';
 import { ImageCropper } from './image/ImageCropper';
@@ -57,6 +58,7 @@ import { HtmlFormatter } from './developer/HtmlFormatter';
 import { CssFormatter } from './developer/CssFormatter';
 import { JavascriptFormatter } from './developer/JavascriptFormatter';
 import { JavascriptMinifier } from './developer/JavascriptMinifier';
+import { CodeCompressor } from './developer/CodeCompressor';
 
 // Calculators & Date/Time
 import { PercentageCalculator } from './calculators/PercentageCalculator';
@@ -112,6 +114,7 @@ import { CsvViewer } from './file/CsvViewer';
 import { FileSizeConverter } from './file/FileSizeConverter';
 import { MimeTypeInspector } from './file/MimeTypeInspector';
 import { XmlFormatter } from './file/XmlFormatter';
+import { ZipCompressor } from './file/ZipCompressor';
 
 // Writing & Language
 import { MarkdownPreviewer } from './writing/MarkdownPreviewer';
@@ -125,9 +128,11 @@ import { VideoThumbnailExtractor } from './video/VideoThumbnailExtractor';
 import { VideoMetadataViewer } from './video/VideoMetadataViewer';
 import { ScreenRecorderTool } from './video/ScreenRecorderTool';
 import { VideoToGif } from './video/VideoToGif';
+import { VideoCompressor } from './video/VideoCompressor';
 import { AudioWaveformViewer } from './audio/AudioWaveformViewer';
 import { AudioTrimmer } from './audio/AudioTrimmer';
 import { AudioVolumeBooster } from './audio/AudioVolumeBooster';
+import { AudioCompressor } from './audio/AudioCompressor';
 import { ToneGenerator } from './audio/ToneGenerator';
 import { AudioSpeedChanger } from './audio/AudioSpeedChanger';
 import { AudioMetadataViewer } from './audio/AudioMetadataViewer';
@@ -244,6 +249,12 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
     case 'CompressImageTo200KB':
     case 'compress-image-to-200kb':
       return <CompressImageTo200KB />;
+    case 'CompressImageTo20KB':
+    case 'compress-image-to-20kb':
+      return <CompressImageTo20KB />;
+    case 'GifCompressor':
+    case 'gif-compressor':
+      return <GifCompressor />;
     case 'PassportPhotoMaker':
     case 'passport-photo-maker':
       return <PassportPhotoMaker />;
@@ -346,6 +357,9 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
     case 'JavascriptMinifier':
     case 'javascript-minifier':
       return <JavascriptMinifier />;
+    case 'CodeCompressor':
+    case 'code-compressor':
+      return <CodeCompressor />;
 
     // Academic & Education Tools
     case 'CgpaCalculator':
@@ -530,6 +544,10 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
     case 'XmlToJson':
     case 'xml-to-json':
       return <CsvToJson />;
+    case 'ZipCompressor':
+    case 'zip-compressor':
+    case 'zip-file-compressor':
+      return <ZipCompressor />;
 
     // Writing & Language
     case 'MarkdownPreviewer':
@@ -549,6 +567,14 @@ export const ToolResolver: React.FC<ToolResolverProps> = ({ tool }) => {
       return <TextTranslator />;
 
     // Video & Audio
+    case 'VideoCompressor':
+    case 'video-compressor':
+    case 'video-compressor-tool':
+      return <VideoCompressor />;
+    case 'AudioCompressor':
+    case 'audio-compressor':
+    case 'audio-compressor-tool':
+      return <AudioCompressor />;
     case 'VideoThumbnailExtractor':
     case 'video-thumbnail-extractor':
       return <VideoThumbnailExtractor />;

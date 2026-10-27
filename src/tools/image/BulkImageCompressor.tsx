@@ -41,7 +41,7 @@ export const BulkImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ in
   const [maxDimension, setMaxDimension] = useState<number>(1920);
   const [targetSizeKB, setTargetSizeKB] = useState<number>(initialTargetKB || 0);
   const [compressionPreset, setCompressionPreset] = useState<'balanced' | 'extreme' | 'target' | 'custom'>(
-    initialTargetKB ? 'target' : 'balanced'
+    initialTargetKB ? 'target' : 'extreme'
   );
   
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
@@ -53,7 +53,7 @@ export const BulkImageCompressor: React.FC<{ initialTargetKB?: number }> = ({ in
   const handlePresetChange = (preset: 'balanced' | 'extreme' | 'target' | 'custom') => {
     setCompressionPreset(preset);
     if (preset === 'extreme') {
-      setQuality(0.55);
+      setQuality(0.45);
       setMaxDimension(1280);
       setFormat('image/webp');
       setTargetSizeKB(0);

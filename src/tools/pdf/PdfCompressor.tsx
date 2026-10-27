@@ -22,7 +22,7 @@ import { formatBytes } from '../image/compressionEngine';
 export const PdfCompressor: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [compressionMode, setCompressionMode] = useState<'super' | 'extreme' | 'balanced' | 'light'>('super');
-  const [targetReduction, setTargetReduction] = useState<number>(65); // Default 65% (exceeds >=50% requirement)
+  const [targetReduction, setTargetReduction] = useState<number>(85); // Default 85% (targets 80-90% reduction)
   const [preserveSelectableText, setPreserveSelectableText] = useState<boolean>(false);
   const [removeMetadata, setRemoveMetadata] = useState<boolean>(true);
   const [flattenForms, setFlattenForms] = useState<boolean>(true);
@@ -189,10 +189,10 @@ export const PdfCompressor: React.FC = () => {
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
-                  { label: '50% Smaller', value: 50, desc: 'Balanced visual quality' },
-                  { label: '65% Smaller', value: 65, desc: 'Recommended standard' },
+                  { label: '85% - 90% Ultra Drop', value: 85, desc: 'Maximum 80-90% reduction' },
                   { label: '75% Smaller', value: 75, desc: 'Email & web uploads' },
-                  { label: '85% Super Drop', value: 85, desc: 'Maximum size reduction' }
+                  { label: '65% Smaller', value: 65, desc: 'Recommended standard' },
+                  { label: '50% Balanced', value: 50, desc: 'Balanced visual quality' }
                 ].map((preset) => (
                   <button
                     key={preset.value}

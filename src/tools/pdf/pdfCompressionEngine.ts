@@ -193,15 +193,18 @@ export async function compressPdfFile(
       let quality = 0.65;
       let scale = 1.25;
 
-      if (options.targetReductionPercent && options.targetReductionPercent >= 75) {
+      if (options.targetReductionPercent && options.targetReductionPercent >= 80) {
+        quality = 0.42;
+        scale = 0.95;
+      } else if (options.targetReductionPercent && options.targetReductionPercent >= 75) {
         quality = 0.50;
         scale = 1.0;
       } else if (options.targetReductionPercent && options.targetReductionPercent >= 60) {
         quality = 0.60;
         scale = 1.15;
-      } else if (options.mode === 'super') {
-        quality = 0.55;
-        scale = 1.1;
+      } else if (options.mode === 'super' || options.mode === 'extreme') {
+        quality = 0.45;
+        scale = 0.98;
       }
 
       const rasterResult = await compressWithRasterEngine(
