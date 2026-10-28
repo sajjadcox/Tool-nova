@@ -4,17 +4,33 @@
     <script>
       (function() {
         try {
+          var isGitHub = window.location.hostname.endsWith('github.io');
+          var p = window.location.pathname;
+          var baseHref = '/';
+
+          if (isGitHub) {
+            var parts = p.split('/').filter(Boolean);
+            var repo = parts.length > 0 ? parts[0] : 'Tool-nova';
+            baseHref = '/' + repo + '/';
+
+            if (p === '/' + repo) {
+              window.history.replaceState(null, '', '/' + repo + '/' + window.location.search + window.location.hash);
+            }
+          }
+
+          document.write('<base href="' + baseHref + '">');
+
           if (window.location.hash) {
             var rawHash = window.location.hash;
             var cleanPath = rawHash.replace(/^#\/?/, '/');
             if (cleanPath && cleanPath !== '/') {
-              window.history.replaceState(null, '', cleanPath);
+              var target = (isGitHub ? baseHref.slice(0, -1) : '') + (cleanPath.startsWith('/') ? cleanPath : '/' + cleanPath);
+              window.history.replaceState(null, '', target);
             }
           }
         } catch (e) {}
       })();
     </script>
-    <base href="/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToolNova - Every Tool You Need. All in One Place.</title>

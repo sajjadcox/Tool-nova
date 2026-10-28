@@ -4,13 +4,30 @@
     <script>
       (function() {
         try {
-          var p = location.pathname;
-          if (p.length > 1 && !p.endsWith('/') && p.split('/').pop().indexOf('.') === -1) {
-            location.replace(location.origin + p + '/' + location.search + (location.hash || '#/'));
-            return;
+          var isGitHub = window.location.hostname.endsWith('github.io');
+          var p = window.location.pathname;
+          var baseHref = '/';
+
+          if (isGitHub) {
+            var parts = p.split('/').filter(Boolean);
+            var repo = parts.length > 0 ? parts[0] : 'Tool-nova';
+            baseHref = '/' + repo + '/';
+
+            if (p === '/' + repo) {
+              window.history.replaceState(null, '', '/' + repo + '/' + window.location.search + window.location.hash);
+            }
           }
-          var baseDir = p.endsWith('/') ? p : (p.split('/').pop().indexOf('.') === -1 ? p + '/' : p.substring(0, p.lastIndexOf('/') + 1));
-          document.write('<base href="' + baseDir + '">');
+
+          document.write('<base href="' + baseHref + '">');
+
+          if (window.location.hash) {
+            var rawHash = window.location.hash;
+            var cleanPath = rawHash.replace(/^#\/?/, '/');
+            if (cleanPath && cleanPath !== '/') {
+              var target = (isGitHub ? baseHref.slice(0, -1) : '') + (cleanPath.startsWith('/') ? cleanPath : '/' + cleanPath);
+              window.history.replaceState(null, '', target);
+            }
+          }
         } catch (e) {}
       })();
     </script>

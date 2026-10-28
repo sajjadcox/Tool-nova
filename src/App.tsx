@@ -59,9 +59,21 @@ const ScrollToTop: React.FC = () => {
   return null;
 };
 
+// Dynamic basename helper: detects GitHub Pages repository subfolder or root domain
+const getBasename = (): string => {
+  if (typeof window !== 'undefined' && window.location.hostname.endsWith('github.io')) {
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    if (segments.length > 0) {
+      return `/${segments[0]}`;
+    }
+    return '/Tool-nova';
+  }
+  return '';
+};
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={getBasename()}>
       <HashToPathRedirect />
       <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-[#0B1220] dark:text-slate-100 transition-colors duration-200">
