@@ -41,7 +41,7 @@ export const HomePage: React.FC = () => {
   useSEO({
     title: 'ToolNova – 255+ Free Online Web Tools | Fast & 100% Private',
     description: 'Discover 255+ powerful, free web tools for images, audio, video, PDFs, SEO, coding, and productivity with 100% private in-browser processing.',
-    canonicalPath: '#/'
+    canonicalPath: '/'
   });
 
   const searchResultsRef = useRef<HTMLDivElement | null>(null);

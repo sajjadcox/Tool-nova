@@ -19,7 +19,7 @@ export const CategoryDetailPage: React.FC = () => {
   useSEO({
     categoryName: category?.name,
     description: category?.description ? `Free online ${category.name} tools. ${category.description} 100% private in-browser processing.` : undefined,
-    canonicalPath: `#/categories/${categorySlug}`
+    canonicalPath: `/categories/${categorySlug}`
   });
 
   if (!category) {

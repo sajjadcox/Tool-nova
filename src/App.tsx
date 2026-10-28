@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, Suspense, lazy } from 'react';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { HomePage } from './pages/HomePage';
@@ -31,6 +31,23 @@ const RouteLoadingFallback: React.FC = () => (
   </div>
 );
 
+// Seamless legacy migration: redirects old #/tools/xyz bookmarks to clean /tools/xyz paths
+const HashToPathRedirect: React.FC = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const cleanPath = window.location.hash.replace(/^#\/?/, '/');
+      if (cleanPath && cleanPath !== '/') {
+        window.history.replaceState(null, '', cleanPath);
+        navigate(cleanPath, { replace: true });
+      }
+    }
+  }, [navigate]);
+
+  return null;
+};
+
 // Scroll to top helper when navigating routes
 const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
@@ -44,7 +61,8 @@ const ScrollToTop: React.FC = () => {
 
 export default function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
+      <HashToPathRedirect />
       <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-[#0B1220] dark:text-slate-100 transition-colors duration-200">
         <Header />
@@ -74,6 +92,6 @@ export default function App() {
         </main>
         <Footer />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 }

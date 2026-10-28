@@ -77,11 +77,13 @@ export function useSEO(props: SEOProps) {
     setMeta('name', 'twitter:description', finalDesc);
     setMeta('name', 'twitter:card', 'summary_large_image');
 
-    // 5. Canonical URL
+    // 5. Canonical URL with clean path
     const origin = window.location.origin;
-    const pathname = window.location.pathname;
-    const hashPath = canonicalPath || (tool ? `#/tools/${tool.slug}` : window.location.hash || '#/');
-    const canonicalUrl = `${origin}${pathname}${hashPath}`;
+    let cleanPath = canonicalPath || (tool ? `/tools/${tool.slug}` : window.location.pathname || '/');
+    if (!cleanPath.startsWith('/')) {
+      cleanPath = `/${cleanPath}`;
+    }
+    const canonicalUrl = `${origin}${cleanPath}`;
 
     setMeta('property', 'og:url', canonicalUrl);
 
@@ -142,7 +144,7 @@ export function useSEO(props: SEOProps) {
         operatingSystem: 'All',
         browserRequirements: 'Requires JavaScript. Requires HTML5.',
         description: 'Comprehensive suite of 255+ free client-side online tools for images, audio, video, PDFs, and developer utilities.',
-        url: `${origin}${pathname}#/`,
+        url: canonicalUrl,
         offers: {
           '@type': 'Offer',
           price: '0',

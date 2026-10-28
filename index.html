@@ -4,16 +4,17 @@
     <script>
       (function() {
         try {
-          var p = location.pathname;
-          if (p.length > 1 && !p.endsWith('/') && p.split('/').pop().indexOf('.') === -1) {
-            location.replace(location.origin + p + '/' + location.search + (location.hash || '#/'));
-            return;
+          if (window.location.hash) {
+            var rawHash = window.location.hash;
+            var cleanPath = rawHash.replace(/^#\/?/, '/');
+            if (cleanPath && cleanPath !== '/') {
+              window.history.replaceState(null, '', cleanPath);
+            }
           }
-          var baseDir = p.endsWith('/') ? p : (p.split('/').pop().indexOf('.') === -1 ? p + '/' : p.substring(0, p.lastIndexOf('/') + 1));
-          document.write('<base href="' + baseDir + '">');
         } catch (e) {}
       })();
     </script>
+    <base href="/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToolNova - Every Tool You Need. All in One Place.</title>

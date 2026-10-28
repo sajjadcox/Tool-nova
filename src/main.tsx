@@ -28,8 +28,7 @@ class RootErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState
   }
 
   handleReload = () => {
-    window.location.hash = '#/';
-    window.location.reload();
+    window.location.href = '/';
   };
 
   render() {
@@ -102,11 +101,13 @@ class RootErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState
 }
 
 try {
-  const hash = window.location.hash;
-  if (!hash || hash === '#' || hash === '#/' || (!sessionStorage.getItem('toolnova_session_active') && hash === '#/tools')) {
-    window.location.hash = '#/';
+  // If user opens a legacy hash URL (e.g. /#/tools/image-compressor), smoothly rewrite to clean path
+  if (window.location.hash) {
+    const cleanPath = window.location.hash.replace(/^#\/?/, '/');
+    if (cleanPath && cleanPath !== '/') {
+      window.history.replaceState(null, '', cleanPath);
+    }
   }
-  sessionStorage.setItem('toolnova_session_active', 'true');
 } catch (e) {}
 
 const rootElement = document.getElementById('root');

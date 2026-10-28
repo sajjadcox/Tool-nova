@@ -14,7 +14,7 @@ export default defineConfig(({ command }) => {
       const repoName = process.env.GITHUB_REPOSITORY.split('/')[1] || '';
       base = repoName.endsWith('.github.io') ? '/' : `/${repoName}/`;
     } else {
-      base = './';
+      base = '/';
     }
   }
 
